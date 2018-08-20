@@ -12,12 +12,6 @@
       <v-stepper-items>
         <v-stepper-content v-for="step in steps" :key="step.name" :step="step.number">
           <component v-bind:is="step.component"></component>
-          <v-btn
-            color="primary"
-            @click="currentStep = currentStep + 1"
-          >
-            Continue
-          </v-btn>
         </v-stepper-content>
       </v-stepper-items>
   </v-stepper>
@@ -29,12 +23,12 @@ import Hello from '@/components/HelloWorld.vue'
 import TermsConditions from '@/components/pages/TermsConditions.vue'
 import Review from '@/components/pages/Review.vue'
 import Participants from '@/components/pages/Participants.vue'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'order',
   data: () => {
     return {
-      currentStep: 1,
       steps: [
         {
           component: TermsConditions,
@@ -58,6 +52,9 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    ...mapGetters(['currentStep'])
   }
 }
 </script>
