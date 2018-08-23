@@ -1,21 +1,19 @@
 <template>
-  <div class="order">
-    <v-stepper v-model="currentStep">
-      <v-stepper-header>
-        <div v-for="step in steps" :key="step.name">
-          <v-stepper-step :complete="currentStep > step.number" :step="step.number">{{step.name}}</v-stepper-step>
+  <v-stepper v-model="currentStep">
+    <v-stepper-header>
+      <div v-for="step in steps" :key="step.name">
+        <v-stepper-step :complete="currentStep > step.number" :step="step.number">{{step.name}}</v-stepper-step>
 
-          <v-divider></v-divider>
-        </div>
-      </v-stepper-header>
+        <v-divider></v-divider>
+      </div>
+    </v-stepper-header>
 
-      <v-stepper-items>
-        <v-stepper-content v-for="step in steps" :key="step.name" :step="step.number">
-          <component v-bind:is="step.component"></component>
-        </v-stepper-content>
-      </v-stepper-items>
-  </v-stepper>
-  </div>
+    <v-stepper-items>
+      <v-stepper-content v-for="step in steps" :key="step.name" :step="step.number">
+        <component v-bind:is="step.component"></component>
+      </v-stepper-content>
+    </v-stepper-items>
+</v-stepper>
 </template>
 
 <script>

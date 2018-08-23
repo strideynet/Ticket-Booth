@@ -4,11 +4,10 @@
       <v-toolbar-title>BigBikeBash Ticket Portal</v-toolbar-title>
     </v-toolbar>
     <v-content>
-      <v-container fluid>
+      <v-container grid-list-md>
         <router-view></router-view>
       </v-container>
     </v-content>
-    <v-footer app></v-footer>
   </v-app>
 </template>
 
