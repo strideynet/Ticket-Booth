@@ -30,9 +30,13 @@
       viverra nulla ut metus varius laoreet. Quisque rutrum. 
       Aenean imperdiet. Etiam ultricies nisi vel augue. 
       Curabitur ullamcorper ultricies nisi.</p>
+
+      <br/>
+      <strong>By clicking accept, you agree to the above terms and conditions.</strong>
+      <br/>
      <v-btn
       color="primary"
-      @click="acceptTerms"
+      @click="$store.commit('acceptTerms')"
     >
       Accept
     </v-btn>
@@ -40,12 +44,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex';
-
 export default {
-  name: 'TermsConditions',
-  methods: {
-    ...mapMutations(['acceptTerms'])
-  }
+  name: 'TermsConditions'
 }
 </script>

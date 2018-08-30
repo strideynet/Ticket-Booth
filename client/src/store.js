@@ -7,7 +7,41 @@ export default new Vuex.Store({
   state: {
     tcsAccepted: false,
     participantsComplete: false,
-    participants: [{}]
+    participants: [],
+    settings: {
+      ticketTypes: {
+        u5: {
+          price: 0.01,
+          priority: 3,
+          criteria: {
+            age: {
+              condition: 'lt',
+              value: 5
+            }
+          }
+        },
+        u18: {
+          price: 100,
+          priority: 2,
+          criteria: {
+            age: {
+              condition: 'lt',
+              value: 18
+            }
+          }
+        },
+        adult: {
+          price: 200,
+          priority: 1,
+          criteria: {
+            age: {
+              condition: 'gt',
+              value: 18
+            }
+          }
+        }
+      }
+    }
   },
   mutations: {
     acceptTerms: state => {
