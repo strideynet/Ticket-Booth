@@ -89,15 +89,15 @@ export default {
       last: this.last,
       nick: this.nick,
       dob: this.dob
-    });
+    })
   },
   methods: {
     deleteParticipant () {
-      this.$emit("deleteParticipant", this.uid);
+      this.$emit("deleteParticipant", this.uid)
     },
     saveDate (date) {
       this.$refs.dateSelector.save(date)
     }
   }
-};
+}
 </script>
