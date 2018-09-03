@@ -10,7 +10,7 @@ export default new Vuex.Store({
     participants: [],
     settings: {
       maxParticipants: 800,
-      current: 10,
+      currentParticipants: 10,
       salesOpen: Date.now(),
       bashDate: '2019-08-23',
       ticketTypes: {
