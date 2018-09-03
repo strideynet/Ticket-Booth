@@ -4,13 +4,13 @@
         <v-flex>
           <h3 class="display-3">Welcome to the site</h3>
 
-          <span class="subheading">Lorem ipsum dick dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
+          <span class="subheading">Noah is a raging faggot</span>
 
           <v-divider class="my-3"></v-divider>
 
           <div class="title mb-3">Tickets sold</div>
           <v-progress-linear 
-          value = "percentageSold"
+          :value = "percentageSold"
           >
 
           </v-progress-linear>
