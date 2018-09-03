@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <v-jumbotron>
       <v-layout align-center>
         <v-flex>
           <h3 class="display-3">Welcome to the site</h3>
@@ -10,22 +9,33 @@
           <v-divider class="my-3"></v-divider>
 
           <div class="title mb-3">Check out our newest features!</div>
+          <v-progress-linear 
+          v-model="percentageSold"
+
+          >
+
+          </v-progress-linear>
 
           <v-btn
             class="mx-0"
             color="primary"
             large
+            to = "Order"
           >
             Start Order
           </v-btn>
         </v-flex>
       </v-layout>
-    </v-jumbotron>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'home'
+  name: 'home',
+      data () {
+      return {
+        percentageSold: 66
+      }
+    }
 }
 </script>
