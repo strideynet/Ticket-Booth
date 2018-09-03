@@ -4,14 +4,13 @@
         <v-flex>
           <h3 class="display-3">Welcome to the site</h3>
 
-          <span class="subheading">Lorem ipsum dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
+          <span class="subheading">Lorem ipsum dick dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
 
           <v-divider class="my-3"></v-divider>
 
-          <div class="title mb-3">Check out our newest features!</div>
+          <div class="title mb-3">Tickets sold</div>
           <v-progress-linear 
-          v-model="percentageSold"
-
+          value = "percentageSold"
           >
 
           </v-progress-linear>
@@ -30,12 +29,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'home',
-      data () {
-      return {
-        percentageSold: 66
-      }
-    }
+  computed:{
+    percentageSold () {
+      return this.currentParticipants / this.maxParticipants
+    },
+    ...mapState({
+      maxParticipants: state => state.settings.maxParticipants,
+      currentParticipants: state => state.settings.currentParticipants
+    })
+  }
 }
 </script>
