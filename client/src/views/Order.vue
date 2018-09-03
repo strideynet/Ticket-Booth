@@ -25,7 +25,7 @@ import {mapGetters} from 'vuex'
 
 export default {
   name: 'order',
-  data: () => {
+  data () {
     return {
       steps: [
         {

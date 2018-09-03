@@ -9,6 +9,10 @@ export default new Vuex.Store({
     participantsComplete: false,
     participants: [],
     settings: {
+      maxParticipants: 800,
+      current: 10,
+      salesOpen: Date.now(),
+      bashDate: '2019-08-23',
       ticketTypes: {
         u5: {
           price: 0.01,
@@ -50,6 +54,27 @@ export default new Vuex.Store({
     finishParticipants: state => {
       if (state.participants.length > 0) {
         state.participantsComplete = true
+      }
+    },
+    addParticipant: state => {
+      state.participants.push({
+        first: 'John',
+        last: 'Smith',
+        nick: 'Smithy',
+        dob: null,
+        mobile: null
+      })
+    },
+    deleteParticipant: (state, participant) => {
+      let index = state.participants.indexOf(participant)
+
+      if (index !== -1) state.participants.splice(index, 1)
+    },
+    updateParticipant: (state, payload) => {
+      let index = state.participants.indexOf(payload.participant)
+
+      if (index !== -1) {
+        state.participants[index][payload.key] = payload.value
       }
     }
   },

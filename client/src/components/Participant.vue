@@ -24,6 +24,7 @@
             label="Nickname"
             placeholder="Placeholder"
             v-model="nick"
+            counter="16"
           ></v-text-field>
 
           <v-menu
@@ -40,7 +41,7 @@
               <v-text-field
                 slot="activator"
                 v-model="dob"
-                label="Birthday date"
+                label="Birth date"
                 prepend-icon="event"
                 readonly
               ></v-text-field>
@@ -53,27 +54,50 @@
               ></v-date-picker>
             </v-menu>
         </v-form>
+        {{bashAge()}}
       </v-card-text>
-      
+
       <v-divider/>
       <v-card-actions>
-        <v-btn color="error" @click='deleteParticipant'>Delete</v-btn>
+        <v-btn color="error" @click='deleteParticipant(participant)'>Delete</v-btn>
       </v-card-actions>
     </v-card>
   </v-flex>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+import moment from 'moment'
+
+// Producers getter and setter for the participant. Links to store.
+function produceComputedProperty (key) {
+  return {
+    get () {
+      return this.participant[key]
+    },
+    set (value) {
+      this.updateParticipant({
+        key,
+        value,
+        participant: this.participant
+      })
+    }
+  }
+}
+
 export default {
-  name: "participant",
-  props: ["iuid"],
+  name: 'participant',
+  props: ['participant'],
+  computed: {
+    ...['first', 'last', 'nick', 'mobile', 'dob'].reduce((acc, key) => ({...acc, [key]: produceComputedProperty(key)}), {}), // maps getter/setters for participant fancily
+    age () {
+      if (this.dob) {
+        return moment(this.$store.state.settings.bashDate).diff(this.dob, 'years')
+      }
+    }
+  },
   data () {
     return {
-      uid: this.iuid,
-      first: "John",
-      last: "Smith",
-      nick: "Smithy",
-      dob: null,
       dateSelector: false
     }
   },
@@ -82,22 +106,14 @@ export default {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
   },
-  updated () {
-    this.$emit("updateParticipant", {
-      uid: this.uid,
-      first: this.first,
-      last: this.last,
-      nick: this.nick,
-      dob: this.dob
-    })
-  },
   methods: {
-    deleteParticipant () {
-      this.$emit("deleteParticipant", this.uid)
-    },
     saveDate (date) {
       this.$refs.dateSelector.save(date)
-    }
+    },
+    bashAge () {
+      return this.dob ? `That makes them ${this.age} at the bash` : ''
+    },
+    ...mapMutations(['deleteParticipant', 'updateParticipant'])
   }
 }
 </script>

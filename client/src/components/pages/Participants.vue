@@ -3,8 +3,7 @@
       <h1>Add Participants</h1>
 
       <v-layout row wrap>
-        <participant v-for="individual in participants" :key="individual.uid" :iuid='individual.uid'
-        @updateParticipant='handleParticipantUpdate' @deleteParticipant='handleParticipantDelete'/>
+        <participant v-for="(individual, index) in participants" :key='`participant-${index}`' :participant="individual"/>
       </v-layout>
 
       <v-btn color="primary"
@@ -26,37 +25,15 @@
 
 <script>
 import Participant from '../Participant.vue'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'Participants',
   components: {Participant},
-  data () {
-    return {
-      uidCount: 0,
-      participants: [{uid: 1}, {uid: 2}]
-    }
-  },
-  methods: {
-    finishParticipants () {
-      this.$store.commit('finishParticipants', this.participants)
-    },
-    handleParticipantUpdate (participant) {
-      let index = this.participants.findIndex(value => {
-        return value.uid === participant.uid
-      })
-
-      this.participants.index = participant
-    },
-    handleParticipantDelete (uid) {
-      let index = this.participants.findIndex(value => {
-        return value.uid === uid
-      })
-
-      this.participants.splice(index, 1)
-    },
-    addParticipant () {
-      this.participants.push({uid: this.uidCount++})
-    }
+  computed: mapState(['participants']),
+  methods: mapMutations(['addParticipant', 'finishParticipants']),
+  mounted () {
+    this.addParticipant()
   }
 }
 </script>
