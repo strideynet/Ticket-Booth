@@ -35,7 +35,7 @@ export default {
   name: "home",
   computed: {
     percentageSold() {
-      return this.currentParticipants / this.maxParticipants;
+      return (this.currentParticipants / this.maxParticipants) * 100;
     },
     ...mapState({
       maxParticipants: state => state.settings.maxParticipants,
