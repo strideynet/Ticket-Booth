@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" dark>
     <v-toolbar app>
       <v-toolbar-title>BigBikeBash Ticket Portal</v-toolbar-title>
     </v-toolbar>
@@ -12,5 +12,6 @@
 </template>
 
 <style lang="stylus">
-  @import '~vuetify/src/stylus/main' // Ensure you are using stylus-loader  
+  @import '~vuetify/src/stylus/main' // Ensure you are using stylus-loader
+  @import './main.styl'
 </style>
