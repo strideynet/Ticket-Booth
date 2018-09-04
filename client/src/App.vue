@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" dark>
+  <v-app id="app">
     <v-toolbar app>
       <v-toolbar-title>BigBikeBash Ticket Portal</v-toolbar-title>
     </v-toolbar>
