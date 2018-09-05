@@ -21,6 +21,7 @@
                   to = "Order"
                 >
                   Start Order
+                  <v-icon dark right>chevron_right</v-icon>
                 </v-btn>
               </v-flex>
             </v-layout>

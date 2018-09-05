@@ -10,6 +10,7 @@
       @click='addParticipant'
       >
         Add Another
+        <v-icon dark right>add_circle</v-icon>
       </v-btn>
 
       <v-btn
@@ -18,6 +19,7 @@
       disabled
       >
       Finish
+      <v-icon dark right>chevron_right</v-icon>
     </v-btn>
 
   </div>
