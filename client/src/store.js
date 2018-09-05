@@ -51,7 +51,7 @@ export default new Vuex.Store({
   actions: {
     updateSettings: context => {
       api.get('/api/settings').then(response => {
-        context.commit(response.data)
+        context.commit('updateSettings', response.data)
       }).catch(err => {
         console.log('implement handler', err)
       })
