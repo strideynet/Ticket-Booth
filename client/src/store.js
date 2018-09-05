@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import api from './helpers/api'
 
 Vue.use(Vuex)
 
@@ -8,44 +9,7 @@ export default new Vuex.Store({
     tcsAccepted: false,
     participantsComplete: false,
     participants: [],
-    settings: {
-      maxParticipants: 800,
-      currentParticipants: 10,
-      salesOpen: Date.now(),
-      bashDate: '2019-08-23',
-      ticketTypes: {
-        u5: {
-          price: 0.01,
-          priority: 3,
-          criteria: {
-            age: {
-              condition: 'lt',
-              value: 5
-            }
-          }
-        },
-        u18: {
-          price: 100,
-          priority: 2,
-          criteria: {
-            age: {
-              condition: 'lt',
-              value: 18
-            }
-          }
-        },
-        adult: {
-          price: 200,
-          priority: 1,
-          criteria: {
-            age: {
-              condition: 'gt',
-              value: 18
-            }
-          }
-        }
-      }
-    }
+    settings: {}
   },
   mutations: {
     acceptTerms: state => {
@@ -76,10 +40,22 @@ export default new Vuex.Store({
       if (index !== -1) {
         state.participants[index][payload.key] = payload.value
       }
+    },
+    updateSettings: (state, newSettings) => {
+      state.settings = {
+        ...state.settings,
+        ...newSettings
+      }
     }
   },
   actions: {
-
+    updateSettings: context => {
+      api.get('/api/settings').then(response => {
+        context.commit(response.data)
+      }).catch(err => {
+        console.log('implement handler', err)
+      })
+    }
   },
   getters: {
     currentStep: state => {
