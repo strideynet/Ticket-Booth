@@ -39,6 +39,7 @@
       @click="$store.commit('acceptTerms')"
     >
       Accept
+      <v-icon dark right>check_circle</v-icon>
     </v-btn>
   </div>
 </template>
