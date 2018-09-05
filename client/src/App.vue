@@ -11,12 +11,7 @@
       </v-content>
     </div>
     <div v-else>
-      <v-layout justify-center>
-        <v-card class="text-xs-center" align-center justify-center>
-          <v-progress-circular indeterminate color="primary"></v-progress-circular>
-          <v-card-text>Loading...</v-card-text>
-        </v-card>
-      </v-layout>
+      <p>Sites loading yo</p>
     </div>
   </v-app>
 </template>
