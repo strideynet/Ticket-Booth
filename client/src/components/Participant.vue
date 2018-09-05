@@ -61,7 +61,7 @@
       <v-card-actions>
         <v-btn color="error" @click='deleteParticipant(participant)'>
           Delete
-          <v-icon dark right>clear</v-icon>
+          <v-icon dark right>cancel</v-icon>
         </v-btn>
       </v-card-actions>
     </v-card>
