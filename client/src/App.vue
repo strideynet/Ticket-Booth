@@ -10,14 +10,19 @@
         </v-container>
       </v-content>
     </div>
-    <div v-else>
-      <v-layout justify-center>
-        <v-card class="text-xs-center" align-center justify-center>
-          <v-progress-circular indeterminate color="primary"></v-progress-circular>
-          <v-card-text>Loading...</v-card-text>
-        </v-card>
-      </v-layout>
-    </div>
+    <v-content v-else>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs1>
+            <v-card class="text-xs-center">
+              <br/>
+              <v-progress-circular indeterminate color="primary"></v-progress-circular>
+              <v-card-text>Loading...</v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
