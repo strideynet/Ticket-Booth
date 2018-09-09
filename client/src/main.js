@@ -3,9 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Vuetify from 'vuetify'
+import Vuelidate from 'vuelidate'
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
 
 Vue.use(Vuetify)
+Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
 

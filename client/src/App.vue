@@ -27,17 +27,17 @@
 </template>
 
 <script>
-  export default {
-    name: 'app',
-    computed: {
-      settingsLoaded () {
-        return Object.keys(this.$store.state.settings).length > 0
-      }
-    },
-    created () {
-      this.$store.dispatch('updateSettings')
+export default {
+  name: 'app',
+  computed: {
+    settingsLoaded () {
+      return Object.keys(this.$store.state.settings).length > 0
     }
+  },
+  created () {
+    this.$store.dispatch('updateSettings')
   }
+}
 </script>
 
 <style lang="stylus">

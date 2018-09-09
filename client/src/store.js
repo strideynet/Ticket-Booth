@@ -4,6 +4,14 @@ import api from './helpers/api'
 
 Vue.use(Vuex)
 
+function isParticipantsReady (state) {
+  if (state.participants.length > 0) {
+    return state.participants.every((participant) => !participant.invalid)
+  }
+
+  return false
+}
+
 export default new Vuex.Store({
   state: {
     tcsAccepted: false,
@@ -16,7 +24,7 @@ export default new Vuex.Store({
       state.tcsAccepted = true
     },
     finishParticipants: state => {
-      if (state.participants.length > 0) {
+      if (isParticipantsReady(state)) {
         state.participantsComplete = true
       }
     },
@@ -26,7 +34,8 @@ export default new Vuex.Store({
         last: 'Smith',
         nick: 'Smithy',
         dob: null,
-        mobile: null
+        mobile: null,
+        invalid: true
       })
     },
     deleteParticipant: (state, participant) => {
@@ -66,6 +75,7 @@ export default new Vuex.Store({
       } else {
         return 3
       }
-    }
+    },
+    isParticipantsReady
   }
 })

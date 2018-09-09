@@ -16,23 +16,25 @@
       <v-btn
       color="warning"
       @click="finishParticipants"
-      disabled
+      :disabled="!isParticipantsReady"
       >
-      Finish
+      Finish <div v-if="!isParticipantsReady"> (not complete)</div>
       <v-icon dark right>chevron_right</v-icon>
     </v-btn>
-
   </div>
 </template>
 
 <script>
 import Participant from '../Participant.vue'
-import { mapState, mapMutations } from 'vuex'
+import { mapGetters, mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'Participants',
-  components: {Participant},
-  computed: mapState(['participants']),
+  components: { Participant },
+  computed: {
+    ...mapState(['participants']),
+    ...mapGetters(['isParticipantsReady'])
+  },
   methods: mapMutations(['addParticipant', 'finishParticipants']),
   mounted () {
     this.addParticipant()

@@ -12,12 +12,14 @@
             label="First Name"
             placeholder="Placeholder"
             v-model="first"
+            :error-messages="$v.first.$invalid ? 'This field is required' : null"
           ></v-text-field>
 
           <v-text-field
             label="Last Name"
             placeholder="Placeholder"
             v-model="last"
+            :error-messages="$v.last.$invalid ? 'This field is required' : null"
           ></v-text-field>
 
           <v-text-field
@@ -25,6 +27,7 @@
             placeholder="Placeholder"
             v-model="nick"
             counter="16"
+            :error-messages="$v.nick.$invalid ? 'Nicknames must be between 4 and 16 chars.' : null"
           ></v-text-field>
 
           <v-menu
@@ -72,6 +75,8 @@
 import { mapMutations } from 'vuex'
 import moment from 'moment'
 
+import { minLength, maxLength, required } from 'vuelidate/lib/validators'
+
 // Producers getter and setter for the participant. Links to store.
 function produceComputedProperty (key) {
   return {
@@ -117,6 +122,28 @@ export default {
       return this.dob ? `That makes them ${this.age} at the bash` : ''
     },
     ...mapMutations(['deleteParticipant', 'updateParticipant'])
+  },
+  created () {
+    this.$watch(() => this.$v.$invalid, (newVal, oldVal) => {
+      this.updateParticipant({
+        key: 'invalid',
+        value: newVal,
+        participant: this.participant
+      })
+    }, { immediate: true })
+  },
+  validations: {
+    first: {
+      required
+    },
+    last: {
+      required
+    },
+    nick: {
+      required,
+      minLength: minLength(4),
+      maxLength: maxLength(16)
+    }
   }
 }
 </script>
