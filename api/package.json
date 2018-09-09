@@ -11,13 +11,16 @@
     "env": {
       "node": true
     },
-    "extends": ["standard"],
+    "extends": [
+      "standard"
+    ],
     "rules": {}
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
-    "mongoose": "^5.2.13"
+    "mongoose": "^5.2.13",
+    "paypal-rest-sdk": "^1.8.1"
   }
 }

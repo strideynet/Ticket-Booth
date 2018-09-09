@@ -41,11 +41,26 @@ router.get('/settings', (req, res, next) => {
   })
 })
 
+/**
+ * /order creates the order and prices it up. It returns the paypal URL to redirect to.
+ *
+ * Returns user to new route designed for handling post payment
+ */
 router.post('/order', (req, res, next) => {
   next()
 })
 
-router.post('/order/execute', (req, res, next) => {
+/**
+ * Return from Paypal API to here. Redirects to the appropriate front-end page with query string for order ID
+ */
+router.post('/order/return', (req, res, next) => {
+  next()
+})
+
+/**
+ * Allows client to fetch just completed order details.
+ */
+router.get('/order', (req, res, next) => {
   next()
 })
 
