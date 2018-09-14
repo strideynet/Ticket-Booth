@@ -7,7 +7,8 @@ let participantSchema = new mongoose.Schema({
   mobile: String,
   dob: Date,
   orderID: {type: mongoose.Schema.Types.ObjectID, ref: 'Order'},
-  created: {type: Date, default: Date.now()}
+  created: {type: Date, default: Date.now()},
+  type: String // "paying" "trade" ""
 })
 
 let Participant = mongoose.model('Participant', participantSchema)

@@ -26,7 +26,7 @@ export default {
         size:  'responsive',    // small | medium | large | responsive
         shape: 'rect',     // pill | rect
         color: 'blue',     // gold | blue | silver | black
-        tagline: false    
+        tagline: false
       },
 
       // PayPal Client IDs - replace with your own
