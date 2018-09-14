@@ -28,8 +28,10 @@
             v-model="nick"
             counter="16"
             :error-messages="$v.nick.$invalid ? 'Nicknames must be between 4 and 16 chars.' : null"
+            hint="This will appear on your number-plate. Keep it family friendly!"
+            persistent-hint
           ></v-text-field>
-
+          <br/>
           <v-menu
               ref="dateSelector"
               :close-on-content-click="false"
@@ -55,9 +57,19 @@
                 min="1900-01-01"
                 @change="saveDate"
               ></v-date-picker>
-            </v-menu>
+          </v-menu>
+
+          <v-text-field
+            v-if="age >= 18"
+            label="Mobile Number"
+            placeholder=""
+            v-model="mobile"
+            :error-messages="$v.nick.$invalid ? 'Must be a valid phone number' : null"
+            hint="We will only use this for emergency contact at BBB."
+            persistent-hint
+          ></v-text-field>
         </v-form>
-        {{bashAge()}}
+        <!--{{bashAge()}} -->
       </v-card-text>
 
       <v-divider/>
@@ -124,7 +136,7 @@ export default {
     ...mapMutations(['deleteParticipant', 'updateParticipant'])
   },
   created () {
-    this.$watch(() => this.$v.$invalid, (newVal, oldVal) => {
+    this.$watch(() => this.$v.$invalid, (newVal, oldVal) => { // Handle updating the invalid property of the participant store-side
       this.updateParticipant({
         key: 'invalid',
         value: newVal,
