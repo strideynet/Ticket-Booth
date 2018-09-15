@@ -4,54 +4,33 @@
 
       <v-layout wrap>
         <v-flex xs12 lg8>
-          <v-card dark>
-            <v-card-title primary-title>
-                <h3>Order Details</h3>
-            </v-card-title>
-
-            <v-divider/>
-            <v-card-text>
+          <h3>Order Details</h3>
+          <v-divider/>
               How many years at bash??
 
               Party name.
-            </v-card-text>
-          </v-card>
           <br/>
-          <v-card dark>
-            <v-card-title primary-title>
-                <h3>Participants</h3>
-            </v-card-title>
 
-            <v-divider/>
-            <v-card-text>
-              <v-data-table
-                :headers="headers.participants"
-                :items="participants"
-                hide-actions
-                class="elevation-1"
-                light
-              >
-                <template slot="items" slot-scope="props">
-                  <td>{{ props.item.first }} {{ props.item.last }}</td>
-                  <td>{{ props.item.nick }}</td>
-                  <td>{{ props.item.dob }}</td>
-                  <td>{{ age(props.item.dob) }}</td>
-                </template>
-              </v-data-table>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-        <v-flex xs12 lg4>
-          <v-card dark>
-            <v-card-title primary-title>
-                <h3>Price Breakdown</h3>
-            </v-card-title>
+          <br/>
+          <h3>Participants</h3>
 
-            <v-divider/>
-            <v-card-text>
-            </v-card-text>
-          </v-card>
+          <v-divider/>
+          <br/>
+          <v-data-table
+            :headers="headers.participants"
+            :items="participants"
+            hide-actions
+            class="elevation-3"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.first }} {{ props.item.last }}</td>
+              <td>{{ props.item.nick }}</td>
+              <td>{{ props.item.dob }}</td>
+              <td>{{ age(props.item.dob) }}</td>
+            </template>
+          </v-data-table>
         </v-flex>
+        <price-breakdown></price-breakdown>
       </v-layout>
       <v-btn color="warning"
       @click='$store.state.participantsComplete = false'
@@ -65,9 +44,13 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
+import PriceBreakdown from '../PriceBreakdown'
 
 export default {
   name: 'Review',
+  components: {
+    'PriceBreakdown': PriceBreakdown
+  },
   computed: {
     ...mapState(['participants'])
   },
