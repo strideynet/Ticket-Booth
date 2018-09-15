@@ -49,6 +49,7 @@
                 label="Birth date"
                 prepend-icon="event"
                 readonly
+                :error-messages="$v.dob.$invalid ? 'DoB is a required field' : null"
               ></v-text-field>
               <v-date-picker
                 ref="picker"
@@ -64,12 +65,11 @@
             label="Mobile Number"
             placeholder=""
             v-model="mobile"
-            :error-messages="$v.nick.$invalid ? 'Must be a valid phone number' : null"
+            :error-messages="$v.mobile.$invalid ? 'Must be a valid phone number' : null"
             hint="We will only use this for emergency contact at BBB."
             persistent-hint
           ></v-text-field>
         </v-form>
-        <!--{{bashAge()}} -->
       </v-card-text>
 
       <v-divider/>
@@ -87,7 +87,7 @@
 import { mapMutations } from 'vuex'
 import moment from 'moment'
 
-import { minLength, maxLength, required } from 'vuelidate/lib/validators'
+import { minLength, maxLength, required, requiredIf } from 'vuelidate/lib/validators'
 
 // Producers getter and setter for the participant. Links to store.
 function produceComputedProperty (key) {
@@ -109,7 +109,7 @@ export default {
   name: 'participant',
   props: ['participant'],
   computed: {
-    ...['first', 'last', 'nick', 'mobile', 'dob'].reduce((acc, key) => ({...acc, [key]: produceComputedProperty(key)}), {}), // maps getter/setters for participant fancily
+    ...['first', 'last', 'nick', 'mobile', 'dob'].reduce((acc, key) => ({ ...acc, [key]: produceComputedProperty(key) }), {}), // maps getter/setters for participant fancily
     age () {
       if (this.dob) {
         return moment(this.$store.state.settings.bashDate).diff(this.dob, 'years')
@@ -129,9 +129,6 @@ export default {
   methods: {
     saveDate (date) {
       this.$refs.dateSelector.save(date)
-    },
-    bashAge () {
-      return this.dob ? `That makes them ${this.age} at the bash` : ''
     },
     ...mapMutations(['deleteParticipant', 'updateParticipant'])
   },
@@ -155,6 +152,14 @@ export default {
       required,
       minLength: minLength(4),
       maxLength: maxLength(16)
+    },
+    dob: {
+      required
+    },
+    mobile: {
+      requiredIf: requiredIf(function () {
+        return this.age >= 18
+      })
     }
   }
 }
