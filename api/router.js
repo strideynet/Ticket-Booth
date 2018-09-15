@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const settings = require('./settings')
-const generateQuote = require('./helpers/calculator')
+const generateQuote = require('./helpers/generate-quote')
 
 router.get('/settings', (req, res, next) => {
   res.status(200).json(settings)

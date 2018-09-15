@@ -48,6 +48,7 @@ function generateQuote (participants) {
     family: []
   }
 
+  // Create family tickets.
   while (participantsSorted.adult.length >= 2) {
     if (participantsSorted.u5.length + participantsSorted.u18.length > 0) {
       let familyTicket = []
@@ -55,7 +56,7 @@ function generateQuote (participants) {
       for (let i = 0; i < 2; i++) {
         if (participantsSorted.u18.length > 0) {
           familyTicket.push(participantsSorted.u18.pop())
-        } else {
+        } else if (participantsSorted.u5.length > 0) {
           familyTicket.push(participantsSorted.u5.pop())
         }
       }
@@ -68,6 +69,31 @@ function generateQuote (participants) {
     } else {
       break
     }
+  }
+
+  let purchases = []
+  let totalPrice = 0
+
+  // Transfer remaining tickets
+  for (let ticketType in ticketsSorted) {
+    if (participantsSorted[ticketType] && participantsSorted[ticketType].length > 0) {
+      ticketsSorted[ticketType] = ticketsSorted[ticketType].concat(participantsSorted[ticketType])
+    }
+
+    let purchase = {
+      ...ticketTypes[ticketType],
+      count: ticketsSorted[ticketType].length,
+      totalPrice: ticketsSorted[ticketType].length * ticketTypes[ticketType].price
+    }
+    purchases.push(purchase)
+
+    totalPrice += purchase.totalPrice
+  }
+
+  return {
+    totalPrice,
+    ticketsSorted,
+    purchases
   }
 }
 
