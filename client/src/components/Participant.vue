@@ -27,11 +27,18 @@
             placeholder="Placeholder"
             v-model="nick"
             counter="16"
-            :error-messages="$v.nick.$invalid ? 'Nicknames must be between 4 and 16 chars.' : null"
+            :error-messages="$v.nick.$invalid ? 'Nicknames must be between 4 and 16 chars' : null"
             hint="This will appear on your number-plate. Keep it family friendly!"
             persistent-hint
           ></v-text-field>
-          <br/>
+
+          <v-select
+            :items="genderOptions"
+            label="Gender"
+            v-model="gender"
+            :error-messages="$v.gender.$invalid ? 'Gender is a required field' : null"
+          ></v-select>
+
           <v-menu
               ref="dateSelector"
               :close-on-content-click="false"
@@ -66,7 +73,7 @@
             placeholder=""
             v-model="mobile"
             :error-messages="$v.mobile.$invalid ? 'Must be a valid phone number' : null"
-            hint="We will only use this for emergency contact at BBB."
+            hint="We will only use this for emergency contact at BBB"
             persistent-hint
           ></v-text-field>
         </v-form>
@@ -109,7 +116,7 @@ export default {
   name: 'participant',
   props: ['participant'],
   computed: {
-    ...['first', 'last', 'nick', 'mobile', 'dob'].reduce((acc, key) => ({ ...acc, [key]: produceComputedProperty(key) }), {}), // maps getter/setters for participant fancily
+    ...['first', 'last', 'nick', 'mobile', 'dob', 'gender'].reduce((acc, key) => ({ ...acc, [key]: produceComputedProperty(key) }), {}), // maps getter/setters for participant fancily
     age () {
       if (this.dob) {
         return moment(this.$store.state.settings.bashDate).diff(this.dob, 'years')
@@ -118,7 +125,21 @@ export default {
   },
   data () {
     return {
-      dateSelector: false
+      dateSelector: false,
+      genderOptions: [
+        {
+          text: 'Male',
+          value: 'male'
+        },
+        {
+          text: 'Female',
+          value: 'female'
+        },
+        {
+          text: 'Other',
+          value: 'other'
+        }
+      ]
     }
   },
   watch: {
@@ -160,6 +181,9 @@ export default {
       requiredIf: requiredIf(function () {
         return this.age >= 18
       })
+    },
+    gender: {
+      required
     }
   }
 }

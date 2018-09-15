@@ -33,6 +33,7 @@ export default new Vuex.Store({
         first: 'John',
         last: 'Smith',
         nick: 'Smithy',
+        gender: '',
         dob: null,
         mobile: null,
         invalid: true
