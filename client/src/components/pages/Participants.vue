@@ -14,7 +14,7 @@
       </v-btn>
 
       <v-btn
-      color="warning"
+      color="success"
       @click="finishParticipants"
       :disabled="!isParticipantsReady"
       >

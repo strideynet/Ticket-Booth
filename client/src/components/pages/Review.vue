@@ -32,11 +32,11 @@
         </v-flex>
         <price-breakdown></price-breakdown>
       </v-layout>
-      <v-btn color="warning"
+      <v-btn color="secondary"
       @click='$store.state.participantsComplete = false'
       >
+        <v-icon dark left>chevron_left</v-icon>
         Go Back
-        <v-icon dark right>backspace</v-icon>
       </v-btn>
   </div>
 </template>
