@@ -19,11 +19,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.2",
     "bugsnag": "^2.4.3",
+    "config": "^2.0.1",
+    "debug": "^4.1.0",
     "express": "^4.16.3",
     "moment": "^2.22.2",
-    "mongoose": "^5.2.13",
-    "paypal-rest-sdk": "^1.8.1"
+    "mysql2": "^1.6.1",
+    "paypal-rest-sdk": "^1.8.1",
+    "sequelize": "^4.39.1"
   },
   "devDependencies": {
     "jest": "^23.6.0"
