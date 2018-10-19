@@ -11,8 +11,27 @@ module.exports = function (sequelize, DataTypes) {
     },
     dob: {
       type: DataTypes.DATE
+    },
+    gender: {
+      type: DataTypes.STRING,
+      validate: {
+        isIn: [['male', 'female', 'other']]
+      }
+    },
+    type: {
+      type: DataTypes.STRING,
+      validate: {
+        isIn: [['paying', 'trade', 'sponsor']]
+      }
+    },
+    mobile: {
+      type: DataTypes.STRING
     }
   })
+
+  Participant.associate = function (models) {
+    Participant.belongsTo(models['order'].model)
+  }
 
   return Participant
 }

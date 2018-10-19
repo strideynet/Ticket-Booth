@@ -3,6 +3,7 @@
     "host": "TB_DB_HOST",
     "database": "TB_DB_NAME",
     "user": "TB_DB_USER",
-    "pass": "TB_DB_PASSWORD"
+    "pass": "TB_DB_PASS",
+    "port": "TB_DB_PORT"
   }
 }

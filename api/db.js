@@ -5,7 +5,7 @@ const path = require('path')
 const Sequelize = require('sequelize')
 
 const DB_HOST = config.get('db.host')
-const DB_DATABASE = config.get('db.username')
+const DB_DATABASE = config.get('db.database')
 const DB_USER = config.get('db.user')
 const DB_PASS = config.get('db.pass')
 debug('all db constants loaded')
@@ -15,7 +15,8 @@ const sequelize = new Sequelize({
   host: DB_HOST,
   username: DB_USER,
   password: DB_PASS,
-  database: DB_DATABASE
+  database: DB_DATABASE,
+  dialect: 'mysql'
 })
 
 /* Attempt connection to check details */
@@ -44,3 +45,10 @@ fs.readdirSync('models/').forEach((fileName) => {
   models[model.name] = model
   debug(`loaded ${model.name}`)
 })
+
+for (const model in models) {
+  debug('setting up associations for ' + model)
+  models[model].model.associate && models[model].model.associate(models)
+}
+
+module.exports = sequelize

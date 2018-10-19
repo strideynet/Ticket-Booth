@@ -2,6 +2,7 @@
   "db": {
     "host": "localhost",
     "database": "bbb-dev",
+    "port": 3306,
     "user": null,
     "pass": null
   }
