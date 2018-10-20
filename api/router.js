@@ -1,9 +1,17 @@
 const router = require('express').Router()
 const settings = require('./settings')
 const generateQuote = require('./helpers/generate-quote')
+const jwt = require('./helpers/jwt')
+const db = require('./db')
 
 router.get('/settings', (req, res, next) => {
-  res.status(200).json(settings)
+  db.models.Participant.count({})
+    .then((c) => {
+      res.status(200).json({
+        ...settings,
+        currentParticipants: c
+      })
+    }).catch((err) => next(err))
 })
 
 /**
@@ -12,30 +20,28 @@ router.get('/settings', (req, res, next) => {
  * Returns user to new route designed for handling post payment
  *
  */
-router.post('/quote', (req, res) => {
-  req.body && res.status(200).json(generateQuote(req.body))
+router.post('/quotes', (req, res, next) => {
+  if (!req.body) return res.status(422).json({err: 'No body supplied.'})
+
+  generateQuote(req.body).then((quote) => {
+    jwt.sign({ quote }, 'quote').then((token) => {
+      res.status(200).json({ quote, jwt: token })
+    }).catch((err) => next(err))
+  }).catch((err) => next(err))
 })
 
 /**
- * /order creates the order and prices it up. It returns the paypal URL to redirect to.
+ * /payment
  *
- * Returns user to new route designed for handling post payment
+ * User submits their order and information. This is compiled into a JWT
+ * and the user is also sent the paypal payment id and other shit
  */
-router.post('/order', (req, res, next) => {
-  next()
-})
+router.post('/payment', require('./routes/payment/post'))
 
 /**
- * Return from Paypal API to here. Redirects to the appropriate front-end page with query string for order ID
+ * Finalises order and executes.
  */
-router.post('/order/return', (req, res, next) => {
-  next()
-})
-
-/**
- * Allows client to fetch just completed order details.
- */
-router.get('/order', (req, res, next) => {
+router.get('/payment/execute', (req, res, next) => {
   next()
 })
 

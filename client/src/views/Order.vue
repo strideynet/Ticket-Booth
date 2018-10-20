@@ -21,11 +21,10 @@
 </template>
 
 <script>
-import Hello from '@/components/HelloWorld.vue'
 import TermsConditions from '@/components/pages/TermsConditions.vue'
 import Review from '@/components/pages/Review.vue'
 import Participants from '@/components/pages/Participants.vue'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'order',
@@ -37,7 +36,7 @@ export default {
           name: 'Terms & Conditions',
           number: 1
         },
-         {
+        {
           component: Participants,
           name: 'Add Participants',
           number: 2
@@ -46,11 +45,6 @@ export default {
           component: Review,
           name: 'Review Payment',
           number: 3,
-        },
-        {
-          component: Hello,
-          name: 'Pay',
-          number: 4
         }
       ]
     }

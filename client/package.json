@@ -11,6 +11,7 @@
     "axios": "^0.18.0",
     "material-design-icons-iconfont": "^3.0.3",
     "moment": "^2.22.2",
+    "paypal-checkout": "^4.0.228",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuelidate": "^0.7.4",

@@ -11,14 +11,14 @@
                 <v-divider class="my-3"></v-divider>
 
                 <div class="title mb-3">Tickets sold ({{currentParticipants}}/{{maxParticipants}})</div>
-                <v-progress-linear 
+                <v-progress-linear
                   :value = "percentageSold"
                 >
                 </v-progress-linear>
                 <v-btn
                   class="mx-0"
                   color="primary"
-                  to = "Order"
+                  to = "order"
                 >
                   Start Order
                   <v-icon dark right>chevron_right</v-icon>
@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
-  name: "home",
+  name: 'home',
   computed: {
-    percentageSold() {
+    percentageSold () {
       return (this.currentParticipants / this.maxParticipants) * 100
     },
     ...mapState({
@@ -43,5 +43,5 @@ export default {
       currentParticipants: state => state.settings.currentParticipants
     })
   }
-};
+}
 </script>

@@ -20,6 +20,9 @@
       <template slot="footer">
         <td colspan="100%">
           <strong>Total Cost: £{{quote.totalPrice}}.00</strong>
+          <br/>
+          <pay v-if="validated && quoteJWT" :jwt="quoteJWT"></pay>
+          <strong v-else class="red--text">You cannot pay until you have completed the order details.</strong>
         </td>
       </template>
     </v-data-table>
@@ -29,11 +32,16 @@
 <script>
 import { mapState } from 'vuex'
 import api from '@/helpers/api'
+import Pay from '@/components/Pay.vue'
 
 export default {
   name: 'PriceBreakdown',
   computed: {
     ...mapState(['participants'])
+  },
+  components: { Pay },
+  props: {
+    validated: Boolean
   },
   data () {
     return {
@@ -59,19 +67,19 @@ export default {
       quote: {
         purchases: [],
         totalPrice: 0
-      }
+      },
+      quoteJWT: null
     }
   },
   created () {
     this.$watch('participants', function (newVal, oldVal) {
-      this.loading = true
-
       if (this.$store.getters.isParticipantsReady) {
-        api.post('/api/quote', this.participants).then((res) => {
-          console.log(JSON.stringify(res.data))
+        this.loading = true
+        api.post('/quotes', this.participants).then((res) => {
           this.loading = false
-
-          this.quote = res.data
+          console.log(res.data)
+          this.quote = res.data.quote
+          this.quoteJWT = res.data.jwt
         })
       }
     }, { immediate: true, deep: true })

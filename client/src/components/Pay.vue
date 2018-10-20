@@ -1,17 +1,18 @@
 <template>
   <div>
-      <h1>Pay</h1>
-
-      <div id="paypal-button"></div>
+    <div id="paypal-button"></div>
+    <br/>
   </div>
 </template>
 
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
-
 <script>
+import paypal from 'paypal-checkout'
+import api from '@/helpers/api'
 export default {
   name: 'Pay',
-
+  props: {
+    jwt: String
+  },
   mounted () {
     paypal.Button.render({
 
@@ -20,6 +21,8 @@ export default {
       env: 'sandbox', // sandbox | production
 
       // Specify the style of the button
+
+      commit: true,
 
       style: {
         label: 'pay',
@@ -37,24 +40,24 @@ export default {
         production: '<insert production client id>'
       },
 
-      payment: function(data, actions) {
-        return actions.payment.create({
-            payment: {
-                transactions: [
-                    {
-                        amount: { total: '0.01', currency: 'USD' }
-                    }
-                ]
-            }
-        });
+      payment: () => {
+        return api.post('/payment', {
+          orderInfo,
+          quoteJWT
+        }).then((res) => {
+          console.log(res.data.jwt)
+
+          return res.data.paymentID
+        })
       },
 
-      onAuthorize: function(data, actions) {
-        return actions.payment.execute().then(function() {
-            window.alert('Payment Complete!');
-        });
+      onAuthorize: () => {
+        return api.post('/payment/execute')
+          .then((res) => {
+            //redirect to complete payment page
+          })
       }
-    }, '#paypal-button');
+    }, '#paypal-button')
   }
 }
 </script>

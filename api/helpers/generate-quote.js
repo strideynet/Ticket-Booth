@@ -1,5 +1,6 @@
 const moment = require('moment')
 const settings = require('../settings')
+const Participant = require('../db').models.Participant
 
 const ticketTypes = {
   u5: {
@@ -20,14 +21,17 @@ const ticketTypes = {
   }
 }
 
-function generateQuote (participants) {
+async function generateQuote (participants) {
   let participantsSorted = {
     u5: [],
     u18: [],
     adult: []
   }
 
-  participants.forEach((participant) => {
+  for (let i = 0; i < participants.length; i++) {
+    const participant = Participant.build(participants[i])
+    await participant.validate()
+
     let age = moment(settings.bashDate).diff(participant.dob, 'years')
 
     if (age < 5) {
@@ -39,7 +43,7 @@ function generateQuote (participants) {
     } else {
       throw new Error('Participant without age.')
     }
-  })
+  }
 
   let ticketsSorted = {
     u5: [],
@@ -93,7 +97,8 @@ function generateQuote (participants) {
   return {
     totalPrice,
     ticketsSorted,
-    purchases
+    purchases,
+    participants
   }
 }
 

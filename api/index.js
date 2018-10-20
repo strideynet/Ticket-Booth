@@ -1,14 +1,22 @@
+const bugsnag = require('bugsnag')
+const cors = require('cors')
+const config = require('config')
+const db = require('./db')
 const express = require('express')
 const router = require('./router')
-const bugsnag = require('bugsnag')
+
 const app = express()
-const db = require('./db')
 
-bugsnag.register('8729333ba977a064080331f47da7d76c')
+const BUGSNAG = config.get('bugsnag')
 
-app.use(bugsnag.requestHandler)
-app.use(bugsnag.errorHandler)
+if (process.env.NODE_ENV === 'production' && BUGSNAG) {
+  bugsnag.register(BUGSNAG, {})
 
+  app.use(bugsnag.requestHandler)
+  app.use(bugsnag.errorHandler)
+}
+
+app.use(cors())
 app.use(express.json())
 app.use('/api', router)
 

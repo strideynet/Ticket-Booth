@@ -1,7 +1,5 @@
 const config = require('config')
 const debug = require('debug')('ticket-boot:db')
-const fs = require('fs')
-const path = require('path')
 const Sequelize = require('sequelize')
 
 const DB_HOST = config.get('db.host')
@@ -33,22 +31,16 @@ sequelize
   })
 
 /* Load in models */
-const models = {}
+sequelize.models = {}
 
-fs.readdirSync('models/').forEach((fileName) => {
-  const model = {}
+sequelize.models.Customer = sequelize.import('./models/customer.js')
+sequelize.models.Order = sequelize.import('./models/order.js')
+sequelize.models.Participant = sequelize.import('./models/participant.js')
+sequelize.models.User = sequelize.import('./models/user.js')
 
-  model.path = path.join(__dirname, 'models/', fileName)
-  model.name = fileName.replace(/\.[^/.]+$/, '')
-  model.model = sequelize.import(model.path)
-
-  models[model.name] = model
-  debug(`loaded ${model.name}`)
-})
-
-for (const model in models) {
+for (const model in sequelize.models) {
   debug('setting up associations for ' + model)
-  models[model].model.associate && models[model].model.associate(models)
+  sequelize.models[model].associate && sequelize.models[model].associate(sequelize.models)
 }
 
 module.exports = sequelize

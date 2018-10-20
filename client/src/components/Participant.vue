@@ -1,6 +1,6 @@
 <template>
   <v-flex xs12 lg4>
-    <v-card dark>
+    <v-card class="elevation-6">
       <v-card-title primary-title>
           <h3>{{first}} {{last}}</h3>
       </v-card-title>

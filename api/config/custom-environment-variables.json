@@ -5,5 +5,11 @@
     "user": "TB_DB_USER",
     "pass": "TB_DB_PASS",
     "port": "TB_DB_PORT"
-  }
+  },
+  "paypal": {
+    "secret": "TB_PP_SECRET",
+    "id": "TB_PP_ID"
+  },
+  "bugsnag": "TB_BUGSNAG",
+  "secret": "TB_SECRET"
 }
