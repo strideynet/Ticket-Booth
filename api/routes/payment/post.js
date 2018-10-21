@@ -1,23 +1,13 @@
 const jwt = require('../../helpers/jwt')
 const paypal = require('../../helpers/paypal')
-const db = require('../../db')
 
 module.exports = (req, res, next) => {
-  if (!req.body.quoteJWT || !req.body.orderInfo) {
+  if (!req.body.quoteJWT) {
     return res.status(422).json({err: 'Missing field.'})
   }
 
   jwt.decode(req.body.quoteJWT)
     .then((decoded) => {
-      if (decoded.sub !== 'quote') {
-        return res.status(422).json({
-          err: {
-            title: 'Validation failed',
-            detail: 'Wrong JWT Type'
-          }
-        })
-      }
-
       if (decoded.quote.purchases.length === 0) {
         return res.status(422).json({
           err: {
@@ -27,7 +17,7 @@ module.exports = (req, res, next) => {
         })
       }
 
-      if (!(decoded.totalPrice > 0)) {
+      if (!(decoded.quote.totalPrice > 0)) {
         return res.status(422).json({
           err: {
             title: 'Validation failed',
@@ -50,8 +40,22 @@ module.exports = (req, res, next) => {
         description: 'BigBikeBash ticket purchase'
       }
 
+      paypal.payment.create(payment, (err, payment) => {
+        if (err) return next(err)
 
+        let newJWT = {
+          ...decoded,
+          paymentID: payment.id
+        }
+
+        jwt.sign(newJWT, 'payment')
+          .then((jwt) => {
+            res.status(200).json({
+              paymentID: payment.id,
+              jwt: newJWT
+            })
+          }).catch((err) => next(err))
+      })
     })
-    .then()
     .catch((err) => next(err))
 }

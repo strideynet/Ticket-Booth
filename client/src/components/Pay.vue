@@ -7,11 +7,15 @@
 
 <script>
 import paypal from 'paypal-checkout'
+import { mapState } from 'vuex'
 import api from '@/helpers/api'
 export default {
   name: 'Pay',
   props: {
     jwt: String
+  },
+  computed: {
+    ...mapState(['participants'])
   },
   mounted () {
     paypal.Button.render({
@@ -42,8 +46,7 @@ export default {
 
       payment: () => {
         return api.post('/payment', {
-          orderInfo,
-          quoteJWT
+          quoteJWT: this.jwt
         }).then((res) => {
           console.log(res.data.jwt)
 
