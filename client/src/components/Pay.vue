@@ -9,56 +9,57 @@
 import paypal from 'paypal-checkout'
 import { mapState } from 'vuex'
 import api from '@/helpers/api'
+
 export default {
   name: 'Pay',
   props: {
-    jwt: String
+    jwt: String,
+    orderInfo: Object
+  },
+  data () {
+    return {
+      paymentJWT: null
+    }
   },
   computed: {
     ...mapState(['participants'])
   },
   mounted () {
     paypal.Button.render({
-
-      // Set your environment
-
-      env: 'sandbox', // sandbox | production
-
-      // Specify the style of the button
+      env: 'sandbox',
 
       commit: true,
 
       style: {
         label: 'pay',
-        size:  'responsive',    // small | medium | large | responsive
-        shape: 'rect',     // pill | rect
-        color: 'blue',     // gold | blue | silver | black
+        size: 'responsive',
+        shape: 'rect',
+        color: 'blue',
         tagline: false
       },
 
-      // PayPal Client IDs - replace with your own
-      // Create a PayPal app: https://developer.paypal.com/developer/applications/create
-
       client: {
-        sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+        sandbox: 'AbWOHwxVEl8WAQvPxGOWF4LQAbo9n-PBBg6A9RDHEwSal64k2aHbuW1vNoV0wguwkFnDcKX89ppI5vdw',
         production: '<insert production client id>'
       },
 
       payment: () => {
         return api.post('/payment', {
-          quoteJWT: this.jwt
+          quoteJWT: this.jwt,
+          orderInfo: this.orderInfo
         }).then((res) => {
-          console.log(res.data.jwt)
-
+          this.paymentJWT = res.data.jwt
           return res.data.paymentID
         })
       },
 
-      onAuthorize: () => {
-        return api.post('/payment/execute')
-          .then((res) => {
-            //redirect to complete payment page
-          })
+      onAuthorize: (data) => {
+        return api.post('/payment/execute', {
+          paymentJWT: this.paymentJWT,
+          payerID: data.payerID
+        }).then((res) => {
+          console.log('you just PAYED')
+        })
       }
     }, '#paypal-button')
   }

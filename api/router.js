@@ -1,3 +1,4 @@
+const errors = require('./helpers/errors').types
 const router = require('express').Router()
 const settings = require('./settings')
 const generateQuote = require('./helpers/generate-quote')
@@ -21,7 +22,7 @@ router.get('/settings', (req, res, next) => {
  *
  */
 router.post('/quotes', (req, res, next) => {
-  if (!req.body) return res.status(422).json({err: 'No body supplied.'})
+  if (!req.body) throw new errors.ValidationError('No body supplied.')
 
   generateQuote(req.body).then((quote) => {
     jwt.sign({ quote }, 'quote').then((token) => {
@@ -30,19 +31,8 @@ router.post('/quotes', (req, res, next) => {
   }).catch((err) => next(err))
 })
 
-/**
- * /payment
- *
- * User submits their order and information. This is compiled into a JWT
- * and the user is also sent the paypal payment id and other shit
- */
+/** Payment API handlers **/
 router.post('/payment', require('./routes/payment/post'))
-
-/**
- * Finalises order and executes.
- */
-router.get('/payment/execute', (req, res, next) => {
-  next()
-})
+router.post('/payment/execute', require('./routes/payment/execute'))
 
 module.exports = router

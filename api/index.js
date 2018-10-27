@@ -2,6 +2,7 @@ const bugsnag = require('bugsnag')
 const cors = require('cors')
 const config = require('config')
 const db = require('./db')
+const errors = require('./helpers/errors')
 const express = require('express')
 const router = require('./router')
 
@@ -21,6 +22,8 @@ app.use(express.json())
 app.use('/api', router)
 
 db.sync()
+
+errors.handlerAdder(app)
 
 app.listen(8081, () => {
   console.log('Listening')

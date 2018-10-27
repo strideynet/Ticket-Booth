@@ -21,7 +21,7 @@
         <td colspan="100%">
           <strong>Total Cost: £{{quote.totalPrice}}.00</strong>
           <br/>
-          <pay v-if="validated && quoteJWT" :jwt="quoteJWT"></pay>
+          <pay v-if="validated && quoteJWT" :jwt="quoteJWT" :order-info="orderInfo"></pay>
           <strong v-else class="red--text">You cannot pay until you have completed the order details.</strong>
         </td>
       </template>
@@ -41,7 +41,8 @@ export default {
   },
   components: { Pay },
   props: {
-    validated: Boolean
+    validated: Boolean,
+    orderInfo: Object
   },
   data () {
     return {

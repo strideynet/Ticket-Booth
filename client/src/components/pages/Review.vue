@@ -14,7 +14,7 @@
                   v-model="orderInfo.partyName"
                   :error-messages="$v.orderInfo.partyName.$invalid ? 'This field is required' : null"
                 ></v-text-field>
-                <p class="caption">You will need to quote this when you arrive for registration at the bash!</p>
+                <p class="caption">You will need to quote this when you arrive for registration at the bash! Your surname would work nicely.</p>
                 <v-text-field
                   label="Email Address"
                   placeholder="Placeholder"
@@ -52,7 +52,7 @@
             </template>
           </v-data-table>
         </v-flex>
-        <price-breakdown :validated="!$v.orderInfo.$invalid"></price-breakdown>
+        <price-breakdown :validated="!$v.orderInfo.$invalid" :order-info="orderInfo"></price-breakdown>
       </v-layout>
       <v-btn color="secondary"
       @click='$store.state.participantsComplete = false'

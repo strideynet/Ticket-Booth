@@ -33,7 +33,6 @@ sequelize
 /* Load in models */
 sequelize.models = {}
 
-sequelize.models.Customer = sequelize.import('./models/customer.js')
 sequelize.models.Order = sequelize.import('./models/order.js')
 sequelize.models.Participant = sequelize.import('./models/participant.js')
 sequelize.models.User = sequelize.import('./models/user.js')
