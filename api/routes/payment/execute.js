@@ -1,5 +1,6 @@
 const db = require('../../db')
 const errors = require('../../helpers/errors').types
+const emails = require('../../helpers/mail')
 const jwt = require('../../helpers/jwt')
 const paypal = require('../../helpers/paypal')
 
@@ -56,6 +57,7 @@ module.exports = (req, res, next) => {
     })
     .then((order) => {
       res.status(200).json(order)
+      emails.receipt(order)
     })
     .catch(next)
 }

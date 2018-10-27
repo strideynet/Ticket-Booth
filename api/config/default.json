@@ -11,5 +11,6 @@
     "id": null
   },
   "bugsnag": null,
-  "secret": null
+  "secret": null,
+  "sendgrid": null
 }

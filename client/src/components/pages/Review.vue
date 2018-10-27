@@ -10,14 +10,14 @@
               <v-flex xs12 lg6>
                 <v-text-field
                   label="Party Name"
-                  placeholder="Placeholder"
+                  placeholder="Your Party Name"
                   v-model="orderInfo.partyName"
                   :error-messages="$v.orderInfo.partyName.$invalid ? 'This field is required' : null"
                 ></v-text-field>
                 <p class="caption">You will need to quote this when you arrive for registration at the bash! Your surname would work nicely.</p>
                 <v-text-field
                   label="Email Address"
-                  placeholder="Placeholder"
+                  placeholder="Your Email Address"
                   v-model="orderInfo.email"
                   :error-messages="$v.orderInfo.email.$invalid ? 'This field is required' : null"
                 ></v-text-field>

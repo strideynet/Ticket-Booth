@@ -11,5 +11,6 @@
     "id": "TB_PP_ID"
   },
   "bugsnag": "TB_BUGSNAG",
-  "secret": "TB_SECRET"
+  "secret": "TB_SECRET",
+  "sendgrid": "TB_SENDGRID"
 }
