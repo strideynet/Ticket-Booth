@@ -58,7 +58,7 @@ export default {
           paymentJWT: this.paymentJWT,
           payerID: data.payerID
         }).then((res) => {
-          console.log('you just PAYED')
+          this.$router.push({ name: 'details', params: { id: res.data.id, secret: res.data.secret } })
         })
       }
     }, '#paypal-button')

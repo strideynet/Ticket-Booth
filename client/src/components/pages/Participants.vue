@@ -1,6 +1,7 @@
 <template>
   <div>
       <h1>Add Participants</h1>
+      <v-divider/>
 
       <v-layout row wrap>
         <participant v-for="(individual, index) in participants" :key='`participant-${index}`' :participant="individual"/>

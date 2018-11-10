@@ -35,4 +35,6 @@ router.post('/quotes', (req, res, next) => {
 router.post('/payment', require('./routes/payment/post'))
 router.post('/payment/execute', require('./routes/payment/execute'))
 
+router.get('/orders/:id/:secret', require('./routes/orders/get-single'))
+
 module.exports = router

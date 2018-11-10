@@ -1,6 +1,11 @@
 const debug = require('debug')('ticket-booth:error-handler')
 
-class ValidationError extends Error {}
+class ValidationError extends Error {
+  constructor (...args) {
+    super(...args)
+    Error.captureStackTrace(this, ValidationError)
+  }
+}
 class ExternalAPIError extends Error {}
 class DatabaseError extends Error {}
 

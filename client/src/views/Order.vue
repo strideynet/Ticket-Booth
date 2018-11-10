@@ -44,7 +44,7 @@ export default {
         {
           component: Review,
           name: 'Review Payment',
-          number: 3,
+          number: 3
         }
       ]
     }

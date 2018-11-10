@@ -1,6 +1,7 @@
 const bugsnag = require('bugsnag')
 const cors = require('cors')
 const config = require('config')
+const debug = require('debug')('ticket-boot:entry')
 const db = require('./db')
 const errors = require('./helpers/errors')
 const express = require('express')
@@ -21,7 +22,12 @@ app.use(cors())
 app.use(express.json())
 app.use('/api', router)
 
-db.sync()
+db.sync().catch((err) => {
+  debug('db sync failed')
+  debug(err)
+
+  process.exit(1)
+})
 
 errors.handlerAdder(app)
 

@@ -28,5 +28,9 @@ module.exports = function (sequelize, DataTypes) {
     }
   })
 
+  Order.associate = function (models) {
+    Order.hasMany(models.Participant)
+  }
+
   return Order
 }
