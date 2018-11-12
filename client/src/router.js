@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Order from './views/Order.vue'
 import OrderDetails from './views/OrderDetails.vue'
+
+import TermsConditions from './views/TermsConditions'
+import Participants from './views/Participants'
+import Review from './views/Review'
+
+import store from './store'
 
 Vue.use(Router)
 
@@ -14,9 +19,37 @@ export default new Router({
       component: Home
     },
     {
-      path: '/order',
-      name: 'order',
-      component: Order
+      path: '/order/tc',
+      name: 'order-tc',
+      component: TermsConditions
+    },
+    {
+      path: '/order/participants',
+      name: 'order-participants',
+      component: Participants,
+      beforeEnter: (to, from, next) => {
+        if (!store.state.tcsAccepted) {
+          return next('/order/tc')
+        }
+
+        next()
+      }
+    },
+    {
+      path: '/order/review',
+      name: 'order-review',
+      component: Review,
+      beforeEnter: (to, from, next) => {
+        if (!store.state.tcsAccepted) {
+          return next('/order/tc')
+        }
+
+        if (!store.state.participantsComplete) {
+          return next('/order/participants')
+        }
+
+        next()
+      }
     },
     {
       path: '/details/:id/:secret',

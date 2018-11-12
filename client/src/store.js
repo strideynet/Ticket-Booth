@@ -68,15 +68,6 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    currentStep: state => {
-      if (state.tcsAccepted === false) {
-        return 1
-      } else if (state.participantsComplete === false) {
-        return 2
-      } else {
-        return 3
-      }
-    },
     isParticipantsReady
   }
 })

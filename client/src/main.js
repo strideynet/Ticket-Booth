@@ -4,10 +4,12 @@ import router from './router'
 import store from './store'
 import Vuetify from 'vuetify'
 import Vuelidate from 'vuelidate'
+import Fragment from 'vue-fragment'
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
 
 Vue.use(Vuetify)
 Vue.use(Vuelidate)
+Vue.use(Fragment.Plugin)
 
 Vue.config.productionTip = false
 

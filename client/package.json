@@ -13,6 +13,7 @@
     "moment": "^2.22.2",
     "paypal-checkout": "^4.0.228",
     "vue": "^2.5.17",
+    "vue-fragment": "^1.2.2",
     "vue-router": "^3.0.1",
     "vuelidate": "^0.7.4",
     "vuetify": "^1.1.13",
