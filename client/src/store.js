@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import api from './helpers/api'
+import Moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ export default new Vuex.Store({
     tcsAccepted: false,
     participantsComplete: false,
     participants: [],
-    settings: {}
+    settings: {},
+    overrideCode: null
   },
   mutations: {
     acceptTerms: state => {
@@ -56,6 +58,9 @@ export default new Vuex.Store({
         ...state.settings,
         ...newSettings
       }
+    },
+    setOverride: (state, code) => {
+      state.overrideCode = code
     }
   },
   actions: {
@@ -68,6 +73,31 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    isParticipantsReady
+    isParticipantsReady,
+    isSalesOpen: (state) => {
+      if (!state.settings.salesOpen) return false
+
+      const now = new Moment()
+
+      return now.isAfter(state.settings.salesOpen)
+    },
+    isTicketsLeft: (state) => {
+      return state.settings.maxParticipants > state.settings.currentParticipants
+    },
+    isPurchaseAllowed: (state, getters) => {
+      if (state.overrideCode) {
+        return true
+      }
+
+      if (!getters.isSalesOpen) {
+        return false
+      }
+
+      if (!getters.isTicketsLeft) {
+        return false
+      }
+
+      return true
+    }
   }
 })

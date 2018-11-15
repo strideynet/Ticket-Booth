@@ -21,13 +21,24 @@ export default new Router({
     {
       path: '/order/tc',
       name: 'order-tc',
-      component: TermsConditions
+      component: TermsConditions,
+      beforeEnter: (to, from, next) => {
+        if (!store.getters.isPurchaseAllowed) {
+          return next('/')
+        }
+
+        next()
+      }
     },
     {
       path: '/order/participants',
       name: 'order-participants',
       component: Participants,
       beforeEnter: (to, from, next) => {
+        if (!store.getters.isPurchaseAllowed) {
+          return next('/')
+        }
+
         if (!store.state.tcsAccepted) {
           return next('/order/tc')
         }
@@ -40,6 +51,10 @@ export default new Router({
       name: 'order-review',
       component: Review,
       beforeEnter: (to, from, next) => {
+        if (!store.getters.isPurchaseAllowed) {
+          return next('/')
+        }
+
         if (!store.state.tcsAccepted) {
           return next('/order/tc')
         }
