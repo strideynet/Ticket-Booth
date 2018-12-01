@@ -4,7 +4,10 @@
           <v-card-text>
             <v-layout align-center>
               <v-flex class="text-xs-center">
-                <h1 class="display-3">BBB 2019</h1>
+                <h2 class="display-3">Big Bike Bash</h2>
+                <h3 class="display-2">23-26 August 2019</h3>
+                <br/>
+
                 <div class="text-xs-left">
                   <span class="subheading">
                     Big Bike Bash is returning bigger and better for 2019. We hope you are looking forward to it as much as we are with another year of fun for the whole family.
@@ -13,6 +16,7 @@
                     Should you have any difficulties using the site, please contact help@bigbikebash.org.uk
                   </span>
                 </div>
+
                 <v-divider class="my-3"></v-divider>
 
                 <div v-if="isPurchaseAllowed">

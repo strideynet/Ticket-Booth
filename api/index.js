@@ -19,7 +19,9 @@ if (process.env.NODE_ENV === 'production' && BUGSNAG) {
 }
 
 app.use(cors())
+app.options('*', cors())
 app.use(express.json())
+
 app.use('/api', router)
 
 db.sync().catch((err) => {
