@@ -6,7 +6,7 @@ const paypal = require('../../helpers/paypal')
 
 function paypalExecute (id, payerID) {
   return new Promise((resolve, reject) => {
-    paypal.payment.execute(id, {payer_id: payerID}, (err, payment) => {
+    paypal.payment.execute(id, { payer_id: payerID }, (err, payment) => {
       if (err) return reject(err)
 
       resolve(payment)

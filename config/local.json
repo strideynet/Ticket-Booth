@@ -1,0 +1,16 @@
+{
+    "db": {
+      "host": "localhost",
+      "database": "bbb_dev",
+      "port": 3306,
+      "user": "dev",
+      "pass": "-[&329M$+revb]%T"
+    },
+    "paypal": {
+      "secret": null,
+      "id": null
+    },
+    "bugsnag": null,
+    "secret": "yote",
+    "sendgrid": null
+  }
