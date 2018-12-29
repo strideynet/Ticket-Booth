@@ -1,39 +1,38 @@
 const debug = require('debug')('ticket-booth:payment-creater')
-const errors = require('../../helpers/errors').types
+const { GenericError, ValidationError } = require('../../helpers/errors')
 const jwt = require('../../helpers/jwt')
 const paypal = require('../../helpers/paypal')
 
 module.exports = (req, res, next) => {
   if (!req.body.quoteJWT) {
-    throw new errors.ValidationError('Missing quoteJWT field')
+    throw new ValidationError('Missing quoteJWT field')
   }
 
   jwt.decode(req.body.quoteJWT)
     .then((decoded) => {
       if (decoded.quote.purchases.length === 0) {
-        throw new errors.ValidationError('No purchases supplied')
+        throw new ValidationError('purchases', '', '0 length')
       }
 
       if (!(decoded.quote.totalPrice > 0)) {
-        throw new errors.ValidationError('Purchase has no value')
+        throw new ValidationError('purchase', decoded.quote.totalPrice, 'has no value')
       }
 
       if (!(req.body.orderInfo)) {
-        throw new errors.ValidationError('OrderInfo missing')
+        throw new ValidationError('OrderInfo', '', 'missing')
       }
 
       if (!(req.body.orderInfo.partyName)) {
-        throw new errors.ValidationError('OrderInfo partyName missing')
+        throw new ValidationError('OrderInfo partyName', '', 'missing')
       }
 
       if (req.body.orderInfo.yearsAtTheBash === undefined) {
-        throw new errors.ValidationError('OrderInfo yearsAtTheBash missing')
+        throw new ValidationError('OrderInfo yearsAtTheBash', '', 'missing')
       }
 
       if (!(req.body.orderInfo.email)) {
-        throw new errors.ValidationError('OrderInfo email missing')
+        throw new ValidationError('OrderInfo email', '', 'missing')
       }
-
 
       const payment = {
         intent: 'sale',
@@ -76,8 +75,8 @@ module.exports = (req, res, next) => {
               paymentID: payment.id,
               jwt: newJWT
             })
-          }).catch((err) => next(err))
+          }).catch(next)
       })
     })
-    .catch((err) => next(err))
+    .catch(next)
 }

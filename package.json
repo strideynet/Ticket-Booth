@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "node index.js",
-    "develop": "DEBUG=* node index.js"
+    "dev": "DEBUG=* nodemon index.js"
   },
   "eslintConfig": {
     "root": true,
@@ -40,6 +40,7 @@
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9"
   }
 }

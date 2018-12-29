@@ -1,5 +1,5 @@
 const db = require('../../db')
-const errors = require('../../helpers/errors').types
+const { GenericError, ValidationError } = require('../../helpers/errors')
 const emails = require('../../helpers/mail')
 const jwt = require('../../helpers/jwt')
 const paypal = require('../../helpers/paypal')
@@ -16,21 +16,20 @@ function paypalExecute (id, payerID) {
 
 module.exports = (req, res, next) => {
   if (!req.body.paymentJWT) {
-    throw new errors.ValidationError('Payment JWT field missing')
+    throw new ValidationError('JWT field', '', 'missing')
   }
 
   jwt.decode(req.body.paymentJWT)
     .then((decoded) => {
       if (!decoded.paymentID) {
-        console.log(decoded)
-        throw new errors.ValidationError('Payment ID field missing')
+        throw new ValidationError('Payment ID field', '', 'missing')
       }
 
       if (!req.body.payerID) {
-        throw new errors.ValidationError('Payer ID field missing')
+        throw new ValidationError('Payer ID', '', 'missing')
       }
 
-      return db.transaction((t) => {
+      return db.transaction(t => {
         let order = null
 
         return db.models.Order
@@ -40,16 +39,16 @@ module.exports = (req, res, next) => {
             partyName: decoded.partyName,
             yearsAtTheBash: decoded.yearsAtTheBash,
             email: decoded.email
-          }, {transaction: t})
+          }, { transaction: t })
           .then((obj) => {
             order = obj
 
-            let toCreate = decoded.quote.participants.map((participant) => ({
+            let toCreate = decoded.quote.participants.map(participant => ({
               ...participant,
               orderId: order.id
             }))
 
-            return db.models.Participant.bulkCreate(toCreate, {transaction: t})
+            return db.models.Participant.bulkCreate(toCreate, { transaction: t })
           })
           .then(() => paypalExecute(decoded.paymentID, req.body.payerID))
           .then(() => (order))
@@ -57,7 +56,7 @@ module.exports = (req, res, next) => {
     })
     .then((order) => {
       res.status(200).json(order)
-      emails.receipt(order)
+      return emails.receipt(order)
     })
     .catch(next)
 }

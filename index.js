@@ -43,8 +43,7 @@ db.sync()
     process.exit(1)
   })
 
-errors.handlerAdder(app)
-
+app.use(errors.genericErrorHandler)
 app.listen(8081, () => {
   debug('Listening')
 })

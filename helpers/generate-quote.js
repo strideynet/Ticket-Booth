@@ -1,6 +1,7 @@
 const moment = require('moment')
 const settings = require('../settings')
 const Participant = require('../db').models.Participant
+const { GenericError } = require('../helpers/errors')
 
 const ticketTypes = {
   u5: {
@@ -41,7 +42,7 @@ async function generateQuote (participants) {
     } else if (age >= 18) {
       participantsSorted.adult.push(participant)
     } else {
-      throw new Error('Participant without age.')
+      throw new GenericError('participant age incorrect')
     }
   }
 

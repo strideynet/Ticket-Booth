@@ -1,4 +1,4 @@
-const errors = require('./helpers/errors').types
+const { ValidationError, GenericError } = require('./helpers/errors')
 const router = require('express').Router()
 const settings = require('./settings')
 const generateQuote = require('./helpers/generate-quote')
@@ -12,17 +12,27 @@ router.get('/settings', (req, res, next) => {
         ...settings,
         currentParticipants: c
       })
-    }).catch((err) => next(err))
+    }).catch(next)
 })
 
 const authMiddleware = (req, res, next) => {
   const auth = req.get('Authorization') && req.get('Authorization').split(' ')
   if (auth && auth[0] === 'Bearer' && auth[1]) {
     jwt.decode(auth[1])
+      .catch(e => {
+        if (e.name === 'TokenExpiredError') {
+          throw new GenericError('Token expired. Log in again.', 401)
+        }
+
+        throw e // rethrow
+      })
       .then(decoded => db.models.User.findOne({ where: { id: decoded.userID } }))
       .then(user => {
         if (!user) {
-          throw new errors.ValidationError('Invalid User Supplied')
+          const err = new GenericError('Invalid User Supplied in jwt')
+          err.meta = auth[1]
+
+          throw err
         }
 
         req.user = user
@@ -30,10 +40,7 @@ const authMiddleware = (req, res, next) => {
       })
       .catch(next)
   } else {
-    res.status(401).json({
-      type: 'Unauthorized',
-      message: 'No valid token presented'
-    })
+    throw new GenericError('No token provided.', 401)
   }
 }
 
@@ -44,13 +51,13 @@ const authMiddleware = (req, res, next) => {
  *
  */
 router.post('/quotes', (req, res, next) => {
-  if (!req.body) throw new errors.ValidationError('No body supplied.')
+  if (!req.body) throw new ValidationError('body', null, 'body is missing')
 
   generateQuote(req.body).then((quote) => {
     jwt.sign({ quote }, 'quote').then((token) => {
       res.status(200).json({ quote, jwt: token })
-    }).catch((err) => next(err))
-  }).catch((err) => next(err))
+    }).catch(next)
+  }).catch(next)
 })
 
 /** Payment API handlers **/

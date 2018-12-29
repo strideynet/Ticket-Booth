@@ -1,6 +1,6 @@
 const db = require('../db')
 const jwt = require('../helpers/jwt')
-const errors = require('../helpers/errors').types
+const { ValidationError, GenericError } = require('../helpers/errors')
 
 module.exports = (req, res, next) => {
   if (req.body.user && req.body.pass) {
@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
     db.models.User.findOne({ where: { username: req.body.user } })
       .then(usr => {
         if (!usr) {
-          throw new errors.ValidationError('Credentials incorrect')
+          throw new GenericError('Credentials incorrect', 401)
         }
 
         user = usr
@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
       })
       .then(correct => {
         if (!correct) {
-          throw new errors.ValidationError('Credentials incorrect')
+          throw new GenericError('Credentials incorrect', 401)
         }
 
         const authJWT = {
@@ -33,6 +33,6 @@ module.exports = (req, res, next) => {
       })
       .catch(next)
   } else {
-    throw new errors.ValidationError('Missing field')
+    throw new ValidationError('user or pass', '', 'missing')
   }
 }

@@ -1,68 +1,62 @@
-const debug = require('debug')('ticket-booth:error-handler')
+const debugLog = require('debug')('ticket-booth:log')
+const debugError = require('debug')('ticket-booth:err')
 
-class ValidationError extends Error {
-  constructor (...args) {
-    super(...args)
-    Error.captureStackTrace(this, ValidationError)
+debugLog.log = console.log.bind(console)
+
+class GenericError extends Error {
+  constructor (message, code = 500) {
+    super(message)
+    this.name = this.constructor.name
+    this.code = code
+
+    Error.captureStackTrace(this, GenericError)
   }
 }
-class ExternalAPIError extends Error {}
-class DatabaseError extends Error {}
+
+class ValidationError extends GenericError {
+  constructor (fieldName, suppliedValue, fault) {
+    super(fieldName + ': ' + fault, 422)
+    this.meta = {
+      fieldName,
+      suppliedValue
+    }
+  }
+}
 
 const types = {
-  DatabaseError,
-  ExternalAPIError,
+  GenericError,
   ValidationError
 }
 
-function DebugError (err, req, res ,next) {
-  debug(err)
+function genericErrorHandler (err, req, res, next) {
+  err.code = err.code || 500
 
-  next(err)
-}
-
-function ValidationErrorHandler (err, req, res, next) {
-  if (err instanceof ValidationError) {
-    return res.status(400).json({
-      type: 'Validation Error',
-      message: err.message
-    })
+  if (err.code < 500) {
+    debugLog(`${req.method} ${req.url} ${err.code} ${err.name} ${err.message}`)
   }
-  next(err)
-}
 
-function ExternalAPIErrorHandler (err, req, res, next) {
-  if (err instanceof ExternalAPIError) {
-    return res.status(500).json({
-      type: 'External API Error'
-    })
+  if (err.code === 500) {
+    debugError(`${req.method} ${req.url} ${err.code} ${err.name} ${err.message}`)
+    debugError(err)
+
+    debugError(req.body || 'no body')
+
+    debugError('jwt if applicable:')
+    debugError(req.get('Authorization') || 'no auth')
+
+    debugError('end of error')
+
+    err.name = 'ServerError'
+    err.message = 'Something went wrong. This incident has been logged.'
+    err.meta = {}
   }
-  next(err)
-}
 
-function DatabaseErrorHandler (err, req, res, next) {
-  if (err instanceof DatabaseError) {
-    return res.status(500).json({
-      type: 'Database Error',
-      message: 'Something went wrong communicating with the database'
-    })
-  }
-  next(err)
-}
-
-function GenericErrorHandler (err, req, res, next) {
-  return res.status(500).json({
-    type: 'Server Error',
-    message: 'Something went wrong!'
+  res.status(err.code).json({
+    name: err.name,
+    code: err.code,
+    message: err.message,
+    meta: err.meta
   })
 }
 
-function handlerAdder (app) {
-  app.use(DebugError)
-  app.use(ValidationErrorHandler)
-  app.use(ExternalAPIErrorHandler)
-  app.use(DatabaseErrorHandler)
-  app.use(GenericErrorHandler)
-}
-
-module.exports = {types, handlerAdder}
+module.exports = { ...types, genericErrorHandler }
