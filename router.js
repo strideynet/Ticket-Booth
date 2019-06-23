@@ -1,9 +1,10 @@
 const { ValidationError, GenericError } = require('./helpers/errors')
-const router = require('express').Router()
-const settings = require('./settings')
+const { asyncWrapper, authMiddleware } = require('./helpers/middleware')
+const db = require('./db')
 const generateQuote = require('./helpers/generate-quote')
 const jwt = require('./helpers/jwt')
-const db = require('./db')
+const router = require('express').Router()
+const settings = require('./settings')
 
 router.get('/settings', (req, res, next) => {
   db.models.Participant.count({})
@@ -14,35 +15,6 @@ router.get('/settings', (req, res, next) => {
       })
     }).catch(next)
 })
-
-const authMiddleware = (req, res, next) => {
-  const auth = req.get('Authorization') && req.get('Authorization').split(' ')
-  if (auth && auth[0] === 'Bearer' && auth[1]) {
-    jwt.decode(auth[1])
-      .catch(e => {
-        if (e.name === 'TokenExpiredError') {
-          throw new GenericError('Token expired. Log in again.', 401)
-        }
-
-        throw e // rethrow
-      })
-      .then(decoded => db.models.User.findOne({ where: { id: decoded.userID } }))
-      .then(user => {
-        if (!user) {
-          const err = new GenericError('Invalid User Supplied in jwt')
-          err.meta = auth[1]
-
-          throw err
-        }
-
-        req.user = user
-        next()
-      })
-      .catch(next)
-  } else {
-    throw new GenericError('No token provided.', 401)
-  }
-}
 
 /**
  * /quote provides a priced quote for the tickets
@@ -69,7 +41,9 @@ router.get('/orders/:id/:secret', require('./routes/orders/get-single'))
 router.post('/auth', require('./routes/auth'))
 
 router.get('/orders', authMiddleware, require('./routes/orders/get'))
-router.get('/participants', authMiddleware, require('./routes/participants/get'))
 router.get('/users', authMiddleware, require('./routes/users/get'))
+
+router.get('/participants', authMiddleware, require('./routes/participants/get'))
+router.patch('/participants/:id', authMiddleware, asyncWrapper(require('./routes/participants/patch')))
 
 module.exports = router

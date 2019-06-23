@@ -32,7 +32,7 @@ db.sync()
             .then(() => root.save())
             .then(() => debug('root user created'))
         } else {
-          debug('root user exists')
+          debug('root user already exists; root user generation not needed.')
         }
       })
   })
