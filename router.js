@@ -1,4 +1,4 @@
-const { ValidationError, GenericError } = require('./helpers/errors')
+const { ValidationError } = require('./helpers/errors')
 const { asyncWrapper, authMiddleware } = require('./helpers/middleware')
 const db = require('./db')
 const generateQuote = require('./helpers/generate-quote')

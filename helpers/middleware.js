@@ -1,6 +1,6 @@
-const { GenericError } = require('./helpers/errors')
-const db = require('./db')
-const jwt = require('./helpers/jwt')
+const { GenericError } = require('./errors')
+const db = require('../db')
+const jwt = require('./jwt')
 
 const asyncWrapper = func => (req, res, next) => {
   Promise.resolve(func(req, res, next))
