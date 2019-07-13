@@ -1,3 +1,14 @@
+const statuses = [
+  'PENDING', // Can be used for manual orders, pending payment
+  'CONFIRMED', // Successful purchases, tickets are valid
+  'CANCELLED' // Cancelled order, tickets are invalidated
+]
+
+const types = [
+  'PORTAL_PURCHASE', // Tickets purchased via website
+  'MANUAL_PURCHASE' // Orders added for purchases made elsewhere
+]
+
 module.exports = function (sequelize, DataTypes) {
   const Order = sequelize.define('order', {
     paypalPayment: {
@@ -25,6 +36,14 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: () => {
         return [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('')
       }
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   })
 
