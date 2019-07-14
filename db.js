@@ -6,6 +6,7 @@ const DB_HOST = config.get('db.host')
 const DB_DATABASE = config.get('db.database')
 const DB_USER = config.get('db.user')
 const DB_PASS = config.get('db.pass')
+const DB_PORT = config.get('db.port')
 debug('all db constants loaded')
 
 /* Initialize database */
@@ -14,6 +15,7 @@ const sequelize = new Sequelize({
   username: DB_USER,
   password: DB_PASS,
   database: DB_DATABASE,
+  port: DB_PORT,
   dialect: 'mysql'
 })
 

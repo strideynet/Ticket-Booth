@@ -38,7 +38,9 @@ module.exports = (req, res, next) => {
             value: decoded.quote.totalPrice,
             partyName: decoded.partyName,
             yearsAtTheBash: decoded.yearsAtTheBash,
-            email: decoded.email
+            email: decoded.email,
+            type: 'PORTAL_PURCHASE',
+            status: 'CONFIRMED'
           }, { transaction: t })
           .then((obj) => {
             order = obj

@@ -4,7 +4,7 @@ const debug = require('debug')('ticket-booth:entry')
 const db = require('./db')
 const errors = require('./helpers/errors')
 const express = require('express')
-const router = require('./router')
+const router = require('./routes')
 
 const app = express()
 
@@ -32,7 +32,7 @@ db.sync()
             .then(() => root.save())
             .then(() => debug('root user created'))
         } else {
-          debug('root user exists')
+          debug('root user already exists; root user generation not needed.')
         }
       })
   })
