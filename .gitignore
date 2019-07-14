@@ -1,2 +1,4 @@
 node_modules
 /connect-db.sh
+
+config/local\.json

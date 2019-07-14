@@ -4,7 +4,7 @@ const debug = require('debug')('ticket-booth:entry')
 const db = require('./db')
 const errors = require('./helpers/errors')
 const express = require('express')
-const router = require('./router')
+const router = require('./routes')
 
 const app = express()
 
