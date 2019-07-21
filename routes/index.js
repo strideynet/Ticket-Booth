@@ -36,7 +36,10 @@ router.post('/quotes', (req, res, next) => {
 router.post('/payment', require('./payment/post'))
 router.post('/payment/execute', require('./payment/execute'))
 
+router.get('/orders', authMiddleware, require('./orders/get'))
 router.get('/orders/:id/:secret', require('./orders/get-single'))
+router.patch('/orders/:id', authMiddleware, asyncWrapper(require('./orders/patch')))
+router.post('/orders', authMiddleware, asyncWrapper(require('./orders/post')))
 
 router.post('/auth', require('./auth'))
 
@@ -46,5 +49,6 @@ router.get('/users', authMiddleware, require('./users/get'))
 router.get('/participants', authMiddleware, require('./participants/get'))
 router.patch('/participants/:id', authMiddleware, asyncWrapper(require('./participants/patch')))
 router.delete('/participants/:id', authMiddleware, asyncWrapper(require('./participants/delete')))
+router.post('/participants', authMiddleware, asyncWrapper(require('./participants/post')))
 
 module.exports = router

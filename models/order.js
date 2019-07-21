@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
   const Order = sequelize.define('order', {
     paypalPayment: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     value: {
       type: DataTypes.DECIMAL(8, 2), // 999999.99 Max value should be enough.
@@ -44,6 +44,10 @@ module.exports = function (sequelize, DataTypes) {
     type: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    note: {
+      type: DataTypes.TEXT('medium'),
+      allowNull: true
     }
   })
 
