@@ -8,9 +8,19 @@ const asyncWrapper = func => (req, res, next) => {
 }
 
 const authMiddleware = (req, res, next) => {
-  const auth = req.get('Authorization') && req.get('Authorization').split(' ')
-  if (auth && auth[0] === 'Bearer' && auth[1]) {
-    jwt.decode(auth[1])
+  let authHeader = null
+  if (req.get('Authorization')) {
+    const authSplit = req.get('Authorization').split(' ')
+    if (authSplit.length === 2) {
+      authHeader = authSplit[1]
+    }
+  }
+  const authQuery = req.query.auth
+
+  const auth = authHeader || authQuery
+
+  if (auth) {
+    jwt.decode(auth)
       .catch(e => {
         if (e.name === 'TokenExpiredError') {
           throw new GenericError('Token expired. Log in again.', 401)
@@ -22,7 +32,7 @@ const authMiddleware = (req, res, next) => {
       .then(user => {
         if (!user) {
           const err = new GenericError('Invalid User Supplied in jwt')
-          err.meta = auth[1]
+          err.meta = auth
 
           throw err
         }

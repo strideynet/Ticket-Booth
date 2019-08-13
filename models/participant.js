@@ -34,6 +34,10 @@ module.exports = function (sequelize, DataTypes) {
     mobile: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    plateNumber: {
+      type: DataTypes.NUMBER,
+      allowNull: true
     }
   })
 

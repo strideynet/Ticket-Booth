@@ -4,6 +4,7 @@ const db = require('../db')
 const generateQuote = require('../helpers/generate-quote')
 const jwt = require('../helpers/jwt')
 const router = require('express').Router()
+const moment = require('moment')
 const settings = require('../settings')
 
 router.get('/settings', (req, res, next) => {
@@ -50,5 +51,35 @@ router.get('/participants', authMiddleware, require('./participants/get'))
 router.patch('/participants/:id', authMiddleware, asyncWrapper(require('./participants/patch')))
 router.delete('/participants/:id', authMiddleware, asyncWrapper(require('./participants/delete')))
 router.post('/participants', authMiddleware, asyncWrapper(require('./participants/post')))
+
+const setupDownload = (filename, fileContent, res) => {
+  res.setHeader('Content-Type', 'text/tab-separated-values')
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}-${Date.now()}.tsv"`)
+}
+router.get('/exports/raceplates', authMiddleware, asyncWrapper((req, res) => {
+  let tsv = 'PlateNumber\tNickname\tAge\n'
+
+  const participants = db.models.Participant.findAll({
+    where: {},
+    include: [{
+      model: db.models.Order,
+      where: {
+        status: 'CONFIRMED'
+      }
+    }]
+  })
+
+  for (const participant of participants) {
+    const age = moment(settings.bashDate).diff(participant.dob, 'years')
+
+    tsv = tsv.concat(`${participant.plateNumber}\t${participant.nick}\t${age}\n`)
+  }
+  setupDownload('raceplates', tsv, res)
+}))
+
+router.get('/exports/labels', authMiddleware, asyncWrapper((req, res) => {
+  const tsv = ''
+  setupDownload('labels', tsv, res)
+}))
 
 module.exports = router
