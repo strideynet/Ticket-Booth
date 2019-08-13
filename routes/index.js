@@ -55,6 +55,7 @@ router.post('/participants', authMiddleware, asyncWrapper(require('./participant
 const setupDownload = (filename, fileContent, res) => {
   res.setHeader('Content-Type', 'text/tab-separated-values')
   res.setHeader('Content-Disposition', `attachment; filename="${filename}-${Date.now()}.tsv"`)
+  res.send(fileContent)
 }
 
 const regenPlates = async () => {
