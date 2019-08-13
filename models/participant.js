@@ -36,7 +36,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     },
     plateNumber: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   })
