@@ -16,7 +16,10 @@ const sequelize = new Sequelize({
   password: DB_PASS,
   database: DB_DATABASE,
   port: DB_PORT,
-  dialect: 'mysql'
+  dialect: 'mysql',
+  dialectOptions: {
+    multipleStatements: true
+  }
 })
 
 /* Attempt connection to check details */
