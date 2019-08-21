@@ -126,4 +126,46 @@ router.get('/exports/labels', authMiddleware, asyncWrapper(async (req, res) => {
   setupDownload('labels', tsv, res)
 }))
 
+router.get('/exports/registration', authMiddleware, asyncWrapper(async (req, res) => {
+  await regenPlates()
+  let tsv = 'PartyName\tOrderId'
+
+  const orders = await db.models.Order.findAll({
+    where: {
+      status: 'CONFIRMED'
+    },
+    include: [{
+      model: db.models.Participant
+    }]
+  })
+
+  let maxParticipants = 0
+  for (const order of orders) {
+    if (order.participants.length > maxParticipants) {
+      maxParticipants = order.participants.length
+    }
+  }
+
+  for (let i = 0; i < maxParticipants; i++) {
+    tsv = tsv.concat(`\tParticipant${i}`)
+  }
+  tsv = tsv.concat('\n')
+
+  for (const order of orders) {
+    tsv = tsv.concat(`${order.partyName}\t${order.id}`)
+
+    for (let i = 0; i < maxParticipants; i++) {
+      if (order.participants[i]) {
+        const ptcpt = order.participants[i]
+        tsv = tsv.concat(`\t${ptcpt.plateNumber} ${ptcpt.first} ${ptcpt.last} ${ptcpt.mobile || 'no mobile'}`)
+      } else {
+        tsv = tsv.concat(`\t`)
+      }
+    }
+    tsv = tsv.concat('\n')
+  }
+
+  setupDownload('registration', tsv, res)
+}))
+
 module.exports = router
