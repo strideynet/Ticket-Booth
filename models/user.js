@@ -1,11 +1,17 @@
+const crypto = require('crypto')
 const bcrypt = require('bcrypt')
 
 module.exports = function (sequelize, DataTypes) {
   const User = sequelize.define('user', {
-    username: {
+    hash: {
       type: DataTypes.STRING
     },
-    hash: {
+    id: {
+      defaultValue: () => crypto.randomBytes(16).toString('hex'),
+      primaryKey: true,
+      type: DataTypes.STRING
+    },
+    username: {
       type: DataTypes.STRING
     }
   })

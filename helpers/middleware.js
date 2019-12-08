@@ -7,42 +7,33 @@ const asyncWrapper = func => (req, res, next) => {
     .catch(next)
 }
 
-const authMiddleware = (req, res, next) => {
-  let authHeader = null
-  if (req.get('Authorization')) {
-    const authSplit = req.get('Authorization').split(' ')
-    if (authSplit.length === 2) {
-      authHeader = authSplit[1]
+const authMiddleware = async (req, res, next) => {
+  try {
+    let authHeader = null
+    if (req.get('Authorization')) {
+      const authSplit = req.get('Authorization').split(' ')
+      if (authSplit.length === 2) {
+        authHeader = authSplit[1]
+      }
     }
-  }
-  const authQuery = req.query.auth
+    const authQuery = req.query.auth
+    const auth = authHeader || authQuery
 
-  const auth = authHeader || authQuery
+    if (!auth) {
+      throw new GenericError('No token provided.', 401)
+    }
 
-  if (auth) {
-    jwt.decode(auth)
-      .catch(e => {
-        if (e.name === 'TokenExpiredError') {
-          throw new GenericError('Token expired. Log in again.', 401)
-        }
+    const decoded = jwt.decode(auth)
+    const user = await db.models.User.findOne({ where: { id: decoded.userId } })
 
-        throw e // rethrow
-      })
-      .then(decoded => db.models.User.findOne({ where: { id: decoded.userID } }))
-      .then(user => {
-        if (!user) {
-          const err = new GenericError('Invalid User Supplied in jwt')
-          err.meta = auth
+    if (!user) {
+      throw new GenericError('Invalid User Supplied in jwt')
+    }
 
-          throw err
-        }
-
-        req.user = user
-        next()
-      })
-      .catch(next)
-  } else {
-    throw new GenericError('No token provided.', 401)
+    req.user = user
+    next()
+  } catch (e) {
+    next(e)
   }
 }
 

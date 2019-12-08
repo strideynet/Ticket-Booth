@@ -1,3 +1,5 @@
+const crypto = require('crypto')
+
 const statuses = [
   'PENDING', // Can be used for manual orders, pending payment
   'CONFIRMED', // Successful purchases, tickets are valid
@@ -11,6 +13,11 @@ const types = [
 
 module.exports = function (sequelize, DataTypes) {
   const Order = sequelize.define('order', {
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+      defaultValue: () => crypto.randomBytes(16).toString('hex')
+    },
     paypalPayment: {
       type: DataTypes.STRING,
       allowNull: true
@@ -33,9 +40,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     secret: {
       type: DataTypes.STRING,
-      defaultValue: () => {
-        return [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('')
-      }
+      defaultValue: () => crypto.randomBytes(16).toString('hex')
     },
     status: {
       type: DataTypes.STRING,

@@ -1,10 +1,10 @@
 const db = require('../../db')
 
-module.exports = (req, res, next) => {
-  db.models.Order.findAll({})
-    .then(orders => {
-      res.status(200)
-        .json(orders)
-    })
-    .catch(next)
+module.exports = async (req, res, next) => {
+  try {
+    const orders = await db.models.Order.findAll({})
+    res.status(200).json(orders)
+  } catch (e) {
+    next(e)
+  }
 }

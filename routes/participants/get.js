@@ -1,12 +1,12 @@
 const db = require('../../db')
 
-module.exports = (req, res, next) => {
-  db.models.Participant.findAll({
-    include: [ db.models.Order ]
-  })
-    .then(participants => {
-      res.status(200)
-        .json(participants)
+module.exports = async (req, res, next) => {
+  try {
+    const participants = await db.models.Participant.findAll({
+      include: [db.models.Order]
     })
-    .catch(next)
+    res.status(200).json(participants)
+  } catch (e) {
+    next(e)
+  }
 }

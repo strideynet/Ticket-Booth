@@ -1,82 +1,91 @@
-const debug = require('debug')('ticket-booth:payment-creater')
-const { GenericError, ValidationError } = require('../../helpers/errors')
+const { ValidationError } = require('../../helpers/errors')
 const jwt = require('../../helpers/jwt')
 const paypal = require('../../helpers/paypal')
 
-module.exports = (req, res, next) => {
-  if (!req.body.quoteJWT) {
-    throw new ValidationError('Missing quoteJWT field')
-  }
+const createOrder = (paymentRequest) => new Promise((resolve, reject) => {
+  paypal.payment.create(paymentRequest, (err, returnedPayment) => {
+    if (err) return reject(err)
+    resolve(returnedPayment)
+  })
+})
 
-  jwt.decode(req.body.quoteJWT)
-    .then((decoded) => {
-      if (decoded.quote.purchases.length === 0) {
-        throw new ValidationError('purchases', '', '0 length')
-      }
+module.exports = async (req, res, next) => {
+  try {
+    if (!req.body.quoteJWT) {
+      throw new ValidationError('Missing quoteJWT field')
+    }
 
-      if (!(decoded.quote.totalPrice > 0)) {
-        throw new ValidationError('purchase', decoded.quote.totalPrice, 'has no value')
-      }
+    const decoded = await jwt.decode(req.body.quoteJWT)
+    if (decoded.purchases.length === 0) {
+      throw new ValidationError('purchases', '', '0 length')
+    }
 
-      if (!(req.body.orderInfo)) {
-        throw new ValidationError('OrderInfo', '', 'missing')
-      }
+    if (!(decoded.totalPrice > 0)) {
+      throw new ValidationError('purchase', decoded.totalPrice, 'has no value')
+    }
 
-      if (!(req.body.orderInfo.partyName)) {
-        throw new ValidationError('OrderInfo partyName', '', 'missing')
-      }
+    if (!req.body.orderInfo) {
+      throw new ValidationError('OrderInfo', '', 'missing')
+    }
 
-      if (req.body.orderInfo.yearsAtTheBash === undefined) {
-        throw new ValidationError('OrderInfo yearsAtTheBash', '', 'missing')
-      }
+    if (!req.body.orderInfo.partyName) {
+      throw new ValidationError('OrderInfo partyName', '', 'missing')
+    }
 
-      if (!(req.body.orderInfo.email)) {
-        throw new ValidationError('OrderInfo email', '', 'missing')
-      }
+    if (req.body.orderInfo.yearsAtTheBash === undefined) {
+      throw new ValidationError('OrderInfo yearsAtTheBash', '', 'missing')
+    }
 
-      const payment = {
-        intent: 'sale',
-        payer: {
-          payment_method: 'paypal'
-        },
-        transactions: [
-          {
-            amount: {
-              total: decoded.quote.totalPrice,
-              currency: 'GBP'
-            },
-            description: 'BigBikeBash ticket purchase'
-          }
-        ],
-        redirect_urls: {
-          return_url: 'https://www.mysite.com',
-          cancel_url: 'https://www.mysite.com'
+    if (!req.body.orderInfo.email) {
+      throw new ValidationError('OrderInfo email', '', 'missing')
+    }
+
+    // add currency to purchases for item list
+    const items = decoded.purchases.map(purchase => ({
+      ...purchase,
+      currency: 'GBP'
+    }))
+
+    const paymentRequest = {
+      intent: 'sale',
+      payer: {
+        payment_method: 'paypal'
+      },
+      transactions: [
+        {
+          item_list: {
+            items
+          },
+          amount: {
+            total: decoded.totalPrice,
+            currency: 'GBP'
+          },
+          description: 'BigBikeBash Order'
         }
+      ],
+      redirect_urls: {
+        return_url: 'https://www.mysite.com',
+        cancel_url: 'https://www.mysite.com'
       }
+    }
 
-      debug('creating payment:')
-      debug(payment)
+    const payment = await createOrder(paymentRequest)
+    const paymentJWT = {
+      ...decoded,
+      email: req.body.orderInfo.email,
+      yearsAtTheBash: req.body.orderInfo.yearsAtTheBash,
+      paymentId: payment.id
+    }
 
-      paypal.payment.create(payment, (err, payment) => {
-        if (err) return next(err)
+    delete paymentJWT.exp
+    delete paymentJWT.sub
 
-        let newJWT = {
-          ...decoded,
-          ...req.body.orderInfo,
-          paymentID: payment.id
-        }
-
-        delete newJWT.exp
-        delete newJWT.sub
-
-        jwt.sign(newJWT, 'payment')
-          .then((newJWT) => {
-            res.status(200).json({
-              paymentID: payment.id,
-              jwt: newJWT
-            })
-          }).catch(next)
-      })
+    const token = await jwt.sign(paymentJWT, 'payment')
+    res.status(200).json({
+      paymentId: payment.id,
+      jwt: token
     })
-    .catch(next)
+  } catch (e) {
+    next(e)
+  }
 }

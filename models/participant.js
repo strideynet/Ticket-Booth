@@ -1,5 +1,12 @@
+const crypto = require('crypto')
+
 module.exports = function (sequelize, DataTypes) {
   const Participant = sequelize.define('participant', {
+    id: {
+      defaultValue: () => crypto.randomBytes(16).toString('hex'),
+      primaryKey: true,
+      type: DataTypes.STRING
+    },
     first: {
       type: DataTypes.STRING,
       allowNull: false
@@ -26,9 +33,9 @@ module.exports = function (sequelize, DataTypes) {
     type: {
       type: DataTypes.STRING,
       validate: {
-        isIn: [['paying', 'trade', 'sponsor']]
+        isIn: [['PAYING', 'TRADE', 'SPONSOR']]
       },
-      defaultValue: 'paying',
+      defaultValue: 'PAYING',
       allowNull: false
     },
     mobile: {
@@ -38,6 +45,10 @@ module.exports = function (sequelize, DataTypes) {
     plateNumber: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    bedAndBreakfast: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   })
 

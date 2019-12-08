@@ -1,9 +1,8 @@
 const moment = require('moment')
 const settings = require('../settings')
 const Participant = require('../db').models.Participant
-const { GenericError } = require('../helpers/errors')
 
-const ticketTypes = {
+const purchaseTypes = {
   u5: {
     name: 'Under 5',
     price: 1
@@ -14,39 +13,45 @@ const ticketTypes = {
   },
   adult: {
     name: 'Adult',
-    price: 100
+    price: 115
   },
   family: {
     name: 'Family',
-    price: 200
+    price: 230
+  },
+  adultBnbAddon: {
+    name: 'Adult Bed and Breakfast Addon',
+    price: 50
+  },
+  childBnbAddon: {
+    name: 'Under 18 Bed and Breakfast Addon',
+    price: 30
   }
 }
 
-async function generateQuote (participants) {
-  let participantsSorted = {
-    u5: [],
-    u18: [],
-    adult: []
-  }
-
-  for (let i = 0; i < participants.length; i++) {
-    const participant = Participant.build(participants[i])
+/**
+ * Generates purchase info from the set of participants given
+ * @param rawParticipants
+ * @returns {Promise<{ticketsSorted: {u5: [], adult: [], family: [], u18: []}, totalPrice: number, purchases: [], participants: *}>}
+ */
+async function generateQuote (rawParticipants) {
+  const processedParticipants = []
+  for (const rawParticipant of rawParticipants) {
+    const participant = Participant.build(rawParticipant)
     await participant.validate()
 
-    let age = moment(settings.bashDate).diff(participant.dob, 'years')
+    participant.age = moment(settings.bashDate).diff(participant.dob, 'years')
 
-    if (age < 5) {
-      participantsSorted.u5.push(participant)
-    } else if (age < 18) {
-      participantsSorted.u18.push(participant)
-    } else if (age >= 18) {
-      participantsSorted.adult.push(participant)
-    } else {
-      throw new GenericError('participant age incorrect')
-    }
+    processedParticipants.push(participant)
   }
 
-  let ticketsSorted = {
+  const participantsSorted = {
+    u5: processedParticipants.filter(p => p.age < 5),
+    u18: processedParticipants.filter(p => p.age < 18),
+    adult: processedParticipants.filter(p => p.age >= 18)
+  }
+
+  const ticketsSorted = {
     u5: [],
     u18: [],
     adult: [],
@@ -54,12 +59,13 @@ async function generateQuote (participants) {
   }
 
   // Create family tickets.
+  // any combo of 2 adults and 2 u18/u5s
   while (participantsSorted.adult.length >= 2) {
     if (participantsSorted.u5.length + participantsSorted.u18.length > 0) {
-      let familyTicket = []
+      const familyTicket = []
 
       for (let i = 0; i < 2; i++) {
-        if (participantsSorted.u18.length > 0) {
+        if (participantsSorted.u18.length > 0) { // under 18s first to provide best offer
           familyTicket.push(participantsSorted.u18.pop())
         } else if (participantsSorted.u5.length > 0) {
           familyTicket.push(participantsSorted.u5.pop())
@@ -76,30 +82,45 @@ async function generateQuote (participants) {
     }
   }
 
-  let purchases = []
-  let totalPrice = 0
-
-  // Transfer remaining tickets
-  for (let ticketType in ticketsSorted) {
-    if (participantsSorted[ticketType] && participantsSorted[ticketType].length > 0) {
-      ticketsSorted[ticketType] = ticketsSorted[ticketType].concat(participantsSorted[ticketType])
+  // transfer remaining participants (who did not fall into combos) into tickets
+  for (const ticketType in ticketsSorted) {
+    if (participantsSorted[ticketType].length > 0) {
+      ticketsSorted[ticketType] = [
+        ...ticketsSorted[ticketType],
+        ...participantsSorted[ticketType]
+      ]
     }
-
-    let purchase = {
-      ...ticketTypes[ticketType],
-      count: ticketsSorted[ticketType].length,
-      totalPrice: ticketsSorted[ticketType].length * ticketTypes[ticketType].price
-    }
-    purchases.push(purchase)
-
-    totalPrice += purchase.totalPrice
   }
 
+  // convert tickets to purchase line items
+  let purchases = []
+  purchases = [
+    ...Object.entries(ticketsSorted).map(([ticketTypeName, tickets]) => ({
+      ...purchaseTypes[ticketTypeName], // pull in name/unit price,
+      quantity: tickets.length
+    }))
+  ]
+
+  // handle bed and breakfast
+  const participantsForBedandBreakfast = {
+    adult: processedParticipants.filter(p => p.age >= 18 && p.bedAndBreakfast === true).length,
+    child: processedParticipants.filter(p => p.age < 18 && p.bedAndBreakfast === true).length
+  }
+  purchases = [
+    ...purchases,
+    ...Object.entries(participantsForBedandBreakfast).map(([bnbType, quantity]) => ({
+      ...purchaseTypes[bnbType + 'BnbAddon'], // pull in name/price
+      quantity
+    }))
+  ]
+
+  // calculate total price:
+  const totalPrice = purchases.reduce((acc, purchase) => acc + (purchase.quantity * purchase.price), 0)
   return {
     totalPrice,
     ticketsSorted,
     purchases,
-    participants
+    participants: rawParticipants
   }
 }
 

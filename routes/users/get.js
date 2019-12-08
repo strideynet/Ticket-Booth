@@ -1,14 +1,15 @@
 const db = require('../../db')
 
-module.exports = (req, res, next) => {
-  db.models.User.findAll({
-    attributes: {
-      exclude: ['hash']
-    }
-  })
-    .then(users => {
-      res.status(200)
-        .json(users)
+module.exports = async (req, res, next) => {
+  try {
+    const users = await db.models.User.findAll({
+      attributes: {
+        exclude: ['hash']
+      }
     })
-    .catch(next)
+
+    res.status(200).json(users)
+  } catch (e) {
+    next(e)
+  }
 }

@@ -12,7 +12,7 @@ app.use(cors())
 app.options('*', cors())
 app.use(express.json())
 
-app.use('/api', router)
+app.use('/v1', router)
 
 db.sync()
   .then(() => {
