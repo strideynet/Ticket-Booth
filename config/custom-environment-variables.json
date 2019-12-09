@@ -1,16 +1,15 @@
 {
   "db": {
-    "host": "TB_DB_HOST",
-    "database": "TB_DB_NAME",
-    "user": "TB_DB_USER",
-    "pass": "TB_DB_PASS",
-    "port": "TB_DB_PORT"
+    "host": "MYSQL_HOST",
+    "database": "MYSQL_DATABASE",
+    "user": "MYSQL_USER",
+    "pass": "MYSQL_PASS",
+    "port": "MYSQL_PORT"
   },
   "paypal": {
-    "secret": "TB_PP_SECRET",
-    "id": "TB_PP_ID"
+    "secret": "PP_SECRET",
+    "id": "PP_ID"
   },
-  "bugsnag": "TB_BUGSNAG",
-  "secret": "TB_SECRET",
-  "sendgrid": "TB_SENDGRID"
+  "secret": "API_SECRET",
+  "sendgrid": "SENDGRID_KEY"
 }

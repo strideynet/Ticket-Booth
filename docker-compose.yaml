@@ -1,0 +1,52 @@
+version: '3.7'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+    - mysql
+    environment:
+      NODE_ENV: production
+      MYSQL_DATABASE: ticketbooth_dev
+      MYSQL_HOST: mysql
+      MYSQL_PASS: ''
+      MYSQL_PORT: '3306'
+      MYSQL_USER: root
+    image: tb-api:dev
+    entrypoint: yarn
+    command: dev
+    networks:
+    - tb-workspace
+    ports:
+    - '8081:8081'
+    volumes:
+    - $PWD/config:/app/config
+    - $PWD/helpers:/app/helpers
+    - $PWD/models:/app/models
+    - $PWD/routes:/app/routes
+    - $PWD/index.js:/app/index.js
+    - $PWD/db.js:/app/db.js
+    - $PWD/settings.js:/app/settings.js
+  mysql:
+    image: mysql:5.7.14
+    ports:
+    - '3306:3306'
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --general_log
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: ticketbooth_dev
+    networks:
+    - tb-workspace
+    volumes:
+    - consistency: delegated
+      source: mysql-vol
+      target: /var/lib/mysql
+      type: volume
+networks:
+  tb-workspace:
+    name: tb-workspace
+volumes:
+  mysql-vol:
+  redis-vol:
+  swagger-vol:

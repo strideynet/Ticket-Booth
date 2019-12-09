@@ -10,7 +10,6 @@
     "secret": null,
     "id": null
   },
-  "bugsnag": null,
   "secret": null,
   "sendgrid": null
 }
