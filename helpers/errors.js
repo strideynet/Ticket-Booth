@@ -1,7 +1,7 @@
-const debugLog = require('debug')('ticket-booth:log')
-const debugError = require('debug')('ticket-booth:err')
-
-debugLog.log = console.log.bind(console)
+const logger = require('pino')({
+  name: 'error-handler',
+  level: process.env.LOG_LEVEL || 'info'
+})
 
 class GenericError extends Error {
   constructor (message, code = 500) {
@@ -32,19 +32,16 @@ function genericErrorHandler (err, req, res, next) {
   err.code = err.code || 500
 
   if (err.code < 500) {
-    debugLog(`${req.method} ${req.url} ${err.code} ${err.name} ${err.message}`)
+    logger.info(`${req.method} ${req.url} ${err.code} ${err.name} ${err.message}`)
   }
 
   if (err.code === 500) {
-    debugError(`${req.method} ${req.url} ${err.code} ${err.name} ${err.message}`)
-    debugError(err)
-
-    debugError(req.body || 'no body')
-
-    debugError('jwt if applicable:')
-    debugError(req.get('Authorization') || 'no auth')
-
-    debugError('end of error')
+    err.req = {
+      body: req.body,
+      query: req.query,
+      originalUrl: req.originalUrl
+    }
+    logger.error(err, 'a fatal error occured during a request')
 
     err.name = 'ServerError'
     err.message = 'Something went wrong. This incident has been logged.'

@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
     if (!(req.body.user && req.body.pass)) {
       throw new ValidationError('user or pass', '', 'missing')
     }
-    const user = await db.models.User.findOne({ where: { username: req.body.user } })
+    const user = await db.models.user.findOne({ where: { username: req.body.user } })
     if (!user) {
       throw new GenericError('Credentials incorrect', 401)
     }

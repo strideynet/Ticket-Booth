@@ -1,6 +1,10 @@
 const cors = require('cors')
 const crypto = require('crypto')
-const debug = require('debug')('ticket-booth:entry')
+const logger = require('pino')({
+  name: 'main',
+  level: process.env.LOG_LEVEL || 'info'
+})
+
 const db = require('./db')
 const errors = require('./helpers/errors')
 const express = require('express')
@@ -17,33 +21,32 @@ app.use('/v1', router)
 db.sync()
   .then(() => {
     /** Create root user if none exists */
-    db.models.User.findOne({ where: { username: 'root' } })
+    db.models.user.findOne({ where: { username: 'root' } })
       .then(usr => {
         if (!usr) {
-          const root = db.models.User.build({
+          const root = db.models.user.build({
             username: 'root'
           })
-          debug('generating root user')
+          logger.warn('generating root user')
 
           const pass = crypto.randomBytes(10).toString('hex')
-          debug('root pass: ' + pass)
+          logger.warn('root pass: ' + pass)
 
           root.setPassword(pass)
             .then(() => root.save())
-            .then(() => debug('root user created'))
+            .then(() => logger.warn('root user created'))
         } else {
-          debug('root user already exists; root user generation not needed.')
+          logger.info('root user already exists; root user generation not needed.')
         }
       })
   })
   .catch(err => {
-    debug('db sync failed')
-    debug(err)
+    logger.fatal('db sync failed', err)
 
     process.exit(1)
   })
 
 app.use(errors.genericErrorHandler)
 app.listen(8081, () => {
-  debug('Listening')
+  logger.info('Listening on 8081')
 })

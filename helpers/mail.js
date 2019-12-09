@@ -1,5 +1,10 @@
 const config = require('config')
-const debug = require('debug')('ticket-booth:email')
+
+const logger = require('pino')({
+  name: 'mail',
+  level: process.env.LOG_LEVEL || 'info'
+})
+
 const sgMail = require('@sendgrid/mail')
 
 sgMail.setApiKey(config.get('sendgrid'))
@@ -10,14 +15,13 @@ emails.receipt = function (order) {
   const msg = {
     to: order.email,
     from: 'noreply@bigbikebash.org.uk',
-    templateId: 'd-e417404d0b344408b78ab7ba72b68f4a',
+    templateId: 'd-4f4fb606c72b4f2ba28efe12fae9693e',
     dynamic_template_data: {
-      ...order.dataValues
+      ...order
     }
   }
 
-  debug('sending email')
-  debug(msg)
+  logger.debug('sending receipt', msg)
 
   return sgMail.send(msg)
 }

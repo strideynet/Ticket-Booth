@@ -2,7 +2,7 @@ const db = require('../../db')
 
 module.exports = async (req, res, next) => {
   try {
-    const users = await db.models.User.findAll({
+    const users = await db.models.user.findAll({
       attributes: {
         exclude: ['hash']
       }

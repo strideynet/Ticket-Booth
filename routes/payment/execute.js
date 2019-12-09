@@ -1,5 +1,9 @@
 const db = require('../../db')
 const { GenericError, ValidationError } = require('../../helpers/errors')
+const logger = require('pino')({
+  name: 'payment-execution',
+  level: process.env.LOG_LEVEL || 'info'
+})
 const emails = require('../../helpers/mail')
 const jwt = require('../../helpers/jwt')
 const paypal = require('../../helpers/paypal')
@@ -31,27 +35,32 @@ module.exports = async (req, res, next) => {
     }
 
     transaction = await db.transaction()
-    const order = await db.models.Order.create({
-      paypalPayment: decoded.paymentID,
+
+    const orderFields = {
+      paypalPayment: decoded.paymentId,
       value: decoded.totalPrice,
       partyName: decoded.partyName,
       yearsAtTheBash: decoded.yearsAtTheBash,
       email: decoded.email,
       type: 'PORTAL_PURCHASE',
       status: 'CONFIRMED'
-    }, { transaction })
+    }
+    logger.debug(orderFields, 'creating order')
+
+    const order = await db.models.order.create(orderFields, { transaction })
 
     const toCreate = decoded.participants.map(participant => ({
       ...participant,
       orderId: order.id
     }))
+    logger.debug(toCreate, 'creating participants')
 
-    await db.models.Participant.bulkCreate(toCreate, { transaction })
+    await db.models.participant.bulkCreate(toCreate, { transaction })
     await executeOrder(decoded.paymentId, req.body.payerId)
 
     await transaction.commit()
     res.status(200).json(order)
-    return emails.receipt(order)
+    return emails.receipt(order.get({ plain: true }))
   } catch (e) {
     if (transaction) {
       await transaction.rollback()

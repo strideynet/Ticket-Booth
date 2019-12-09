@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
       throw new ValidationError('secret or id', '', 'not provided')
     }
 
-    const order = await db.models.Order.findOne({ where: { id: req.params.id } })
+    const order = await db.models.order.findOne({ where: { id: req.params.id } })
     if (!order) {
       throw new GenericError('Order does not exist', 404)
     }

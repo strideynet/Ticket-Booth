@@ -74,6 +74,7 @@ module.exports = async (req, res, next) => {
       ...decoded,
       email: req.body.orderInfo.email,
       yearsAtTheBash: req.body.orderInfo.yearsAtTheBash,
+      partyName: req.body.orderInfo.partyName,
       paymentId: payment.id
     }
 

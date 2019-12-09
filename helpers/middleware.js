@@ -23,8 +23,8 @@ const authMiddleware = async (req, res, next) => {
       throw new GenericError('No token provided.', 401)
     }
 
-    const decoded = jwt.decode(auth)
-    const user = await db.models.User.findOne({ where: { id: decoded.userId } })
+    const decoded = await jwt.decode(auth)
+    const user = await db.models.user.findOne({ where: { id: decoded.userId } })
 
     if (!user) {
       throw new GenericError('Invalid User Supplied in jwt')

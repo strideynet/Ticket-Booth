@@ -53,7 +53,7 @@ module.exports = function (sequelize, DataTypes) {
   })
 
   Participant.associate = function (models) {
-    Participant.belongsTo(models.Order)
+    Participant.belongsTo(models.order)
   }
 
   return Participant

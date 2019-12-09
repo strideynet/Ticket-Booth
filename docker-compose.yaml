@@ -7,12 +7,12 @@ services:
     depends_on:
     - mysql
     environment:
-      NODE_ENV: production
       MYSQL_DATABASE: ticketbooth_dev
       MYSQL_HOST: mysql
       MYSQL_PASS: ''
       MYSQL_PORT: '3306'
       MYSQL_USER: root
+      LOG_LEVEL: debug
     image: tb-api:dev
     entrypoint: yarn
     command: dev
@@ -48,5 +48,4 @@ networks:
     name: tb-workspace
 volumes:
   mysql-vol:
-  redis-vol:
-  swagger-vol:
+

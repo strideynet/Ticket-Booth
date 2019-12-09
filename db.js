@@ -1,5 +1,8 @@
 const config = require('config')
-const debug = require('debug')('ticket-boot:db')
+const logger = require('pino')({
+  name: 'database',
+  level: process.env.LOG_LEVEL || 'info'
+})
 const Sequelize = require('sequelize')
 
 const DB_HOST = config.get('db.host')
@@ -7,7 +10,6 @@ const DB_DATABASE = config.get('db.database')
 const DB_USER = config.get('db.user')
 const DB_PASS = config.get('db.pass')
 const DB_PORT = config.get('db.port')
-debug('all db constants loaded')
 
 /* Initialize database */
 const sequelize = new Sequelize({
@@ -16,6 +18,7 @@ const sequelize = new Sequelize({
   password: DB_PASS,
   database: DB_DATABASE,
   port: DB_PORT,
+  logging: logger.trace.bind(logger),
   dialect: 'mysql',
   dialectOptions: {
     multipleStatements: true
@@ -26,24 +29,21 @@ const sequelize = new Sequelize({
 sequelize
   .authenticate()
   .then(() => {
-    debug('db succesfully connected')
+    logger.info('db succesfully connected')
   })
   .catch((err) => {
-    debug('db connection failed')
-    debug(err)
+    logger.fatal(err, 'db connection failed')
 
     process.exit(1)
   })
 
 /* Load in models */
-sequelize.models = {}
-
-sequelize.models.Order = sequelize.import('./models/order.js')
-sequelize.models.Participant = sequelize.import('./models/participant.js')
-sequelize.models.User = sequelize.import('./models/user.js')
+sequelize.import('./models/order.js')
+sequelize.import('./models/participant.js')
+sequelize.import('./models/user.js')
 
 for (const model in sequelize.models) {
-  debug('setting up associations for ' + model)
+  logger.info('setting up associations for ' + model)
   sequelize.models[model].associate && sequelize.models[model].associate(sequelize.models)
 }
 

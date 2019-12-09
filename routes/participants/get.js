@@ -2,8 +2,8 @@ const db = require('../../db')
 
 module.exports = async (req, res, next) => {
   try {
-    const participants = await db.models.Participant.findAll({
-      include: [db.models.Order]
+    const participants = await db.models.participant.findAll({
+      include: [db.models.order]
     })
     res.status(200).json(participants)
   } catch (e) {

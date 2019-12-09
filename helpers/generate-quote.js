@@ -1,6 +1,6 @@
 const moment = require('moment')
 const settings = require('../settings')
-const Participant = require('../db').models.Participant
+const Participant = require('../db').models.participant
 
 const purchaseTypes = {
   u5: {
@@ -83,12 +83,9 @@ async function generateQuote (rawParticipants) {
   }
 
   // transfer remaining participants (who did not fall into combos) into tickets
-  for (const ticketType in ticketsSorted) {
-    if (participantsSorted[ticketType].length > 0) {
-      ticketsSorted[ticketType] = [
-        ...ticketsSorted[ticketType],
-        ...participantsSorted[ticketType]
-      ]
+  for (const participantCategory in participantsSorted) {
+    if (participantsSorted[participantCategory].length > 0) {
+      ticketsSorted[participantCategory] = participantsSorted[participantCategory]
     }
   }
 
@@ -113,6 +110,9 @@ async function generateQuote (rawParticipants) {
       quantity
     }))
   ]
+
+  // remove purchases with 0 quantity
+  purchases = purchases.filter(purchase => purchase.quantity)
 
   // calculate total price:
   const totalPrice = purchases.reduce((acc, purchase) => acc + (purchase.quantity * purchase.price), 0)

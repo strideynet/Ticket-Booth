@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     },
     value: {
-      type: DataTypes.DECIMAL(8, 2), // 999999.99 Max value should be enough.
+      type: DataTypes.DECIMAL(8, 2), // 999999.99 Max value should be enough
       allowNull: false
     },
     yearsAtTheBash: {
@@ -57,7 +57,7 @@ module.exports = function (sequelize, DataTypes) {
   })
 
   Order.associate = function (models) {
-    Order.hasMany(models.Participant)
+    Order.hasMany(models.participant)
   }
 
   return Order

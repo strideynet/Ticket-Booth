@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "node /app/index.js",
-    "dev": "DEBUG=* nodemon /app/index.js"
+    "dev": "nodemon /app/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "moment": "^2.22.2",
     "mysql2": "^1.6.1",
     "paypal-rest-sdk": "^1.8.1",
+    "pino": "^5.14.0",
     "sequelize": "^4.39.1",
     "standard": "^14.3.1"
   },

@@ -8,7 +8,7 @@ const settings = require('../settings')
 
 router.get('/settings', async (req, res, next) => {
   try {
-    const count = await db.models.Participant.count({})
+    const count = await db.models.participant.count({})
 
     res.status(200).json({
       ...settings,
@@ -30,7 +30,7 @@ router.post('/quotes', async (req, res, next) => {
     if (!req.body) throw new ValidationError('body', null, 'body is missing')
 
     const quote = await generateQuote(req.body)
-    const token = await jwt.sign(quote)
+    const token = await jwt.sign(quote, 'quote')
 
     res.status(200).json({ quote, jwt: token })
   } catch (e) {

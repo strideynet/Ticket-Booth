@@ -14,10 +14,10 @@ router.get('/raceplates', authMiddleware, async (req, res, next) => {
   try {
     let tsv = 'PlateNumber\tNickname\tAge\n'
 
-    const participants = await db.models.Participant.findAll({
+    const participants = await db.models.participant.findAll({
       where: {},
       include: [{
-        model: db.models.Order,
+        model: db.models.order,
         where: {
           status: 'CONFIRMED'
         }
@@ -39,12 +39,12 @@ router.get('/labels', authMiddleware, async (req, res, next) => {
   try {
     let tsv = 'PartyName\tOrderId'
 
-    const orders = await db.models.Order.findAll({
+    const orders = await db.models.order.findAll({
       where: {
         status: 'CONFIRMED'
       },
       include: [{
-        model: db.models.Participant
+        model: db.models.participant
       }]
     })
 
@@ -84,12 +84,12 @@ router.get('/registration', authMiddleware, async (req, res, next) => {
   try {
     let tsv = 'PartyName\tOrderId'
 
-    const orders = await db.models.Order.findAll({
+    const orders = await db.models.order.findAll({
       where: {
         status: 'CONFIRMED'
       },
       include: [{
-        model: db.models.Participant
+        model: db.models.participant
       }]
     })
 
