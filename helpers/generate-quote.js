@@ -47,7 +47,7 @@ async function generateQuote (rawParticipants) {
 
   const participantsSorted = {
     u5: processedParticipants.filter(p => p.age < 5),
-    u18: processedParticipants.filter(p => p.age < 18),
+    u18: processedParticipants.filter(p => p.age < 18 && p.age >= 5),
     adult: processedParticipants.filter(p => p.age >= 18)
   }
 
@@ -61,7 +61,7 @@ async function generateQuote (rawParticipants) {
   // Create family tickets.
   // any combo of 2 adults and 2 u18/u5s
   while (participantsSorted.adult.length >= 2) {
-    if (participantsSorted.u5.length + participantsSorted.u18.length > 0) {
+    if ((participantsSorted.u5.length + participantsSorted.u18.length) > 0) {
       const familyTicket = []
 
       for (let i = 0; i < 2; i++) {
