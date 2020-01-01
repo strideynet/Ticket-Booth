@@ -8,7 +8,14 @@ const settings = require('../settings')
 
 router.get('/settings', async (req, res, next) => {
   try {
-    const count = await db.models.participant.count({})
+    const count = await db.models.participant.count({
+      include: [{
+        model: db.models.order,
+        where: {
+          status: 'CONFIRMED'
+        }
+      }]
+    })
 
     res.status(200).json({
       ...settings,
