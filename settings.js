@@ -1,5 +1,5 @@
 module.exports = {
-  maxParticipants: 700,
-  salesOpen: '2020-01-01 13:00:00',
-  bashDate: '2020-08-28'
+  maxParticipants: 750,
+  salesOpen: '2021-08-30 13:00:00',
+  bashDate: '2021-08-30'
 }
