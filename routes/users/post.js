@@ -10,9 +10,7 @@ module.exports = asyncWrapper(async (req, res) => {
         username: req.body.username
     })
 
-    const pass = crypto.randomBytes(10).toString(req.body.password)
-
-    await newUser.setPassword(pass)
+    await newUser.setPassword(req.body.password)
     await newUser.save()
 
     res.status(204).end()
