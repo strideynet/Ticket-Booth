@@ -1,7 +1,7 @@
 const db = require('../../db')
+const { asyncWrapper} = require('../../helpers/middleware')
 
-module.exports = async (req, res, next) => {
-  try {
+module.exports = asyncWrapper(async (req, res, next) => {
     const users = await db.models.user.findAll({
       attributes: {
         exclude: ['hash']
@@ -9,7 +9,4 @@ module.exports = async (req, res, next) => {
     })
 
     res.status(200).json(users)
-  } catch (e) {
-    next(e)
-  }
-}
+})
