@@ -16,6 +16,8 @@
               <span class="subheading">
                 Big Bike Bash is returning for 2021. We hope you are looking forward to it as much as we are with another year of fun for the whole family.
                 <br><br>
+                <h2>This round of sales is for 2020 ticket holders only! If you are not a 2020 ticket holder, we will cancel your order!</h2>
+                <br><br>
                 Should you have any difficulties using the site, please contact admin@bigbikebash.org.uk
               </span>
             </div>
