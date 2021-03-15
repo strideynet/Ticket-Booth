@@ -83,7 +83,7 @@ export default {
         return false
       }
 
-      if (!getters.isSalesOpen && state.overrideCode !== 'snafflesomecider') {
+      if (!getters.isSalesOpen && state.overrideCode !== 'glugglugglug`') {
         return false
       }
 
