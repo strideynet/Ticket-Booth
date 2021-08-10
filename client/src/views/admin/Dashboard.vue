@@ -24,7 +24,7 @@
         xs12
         md4
       >
-        <v-card title="Participants">
+        <v-card title="Orders">
           <div class="text-xs-center">
             <span class="display-3 text-xs-center">
               {{ orderCount }}
@@ -61,14 +61,17 @@
       Data Exports
     </h2>
     <v-btn :href="'https://api.bigbikebash.org.uk/v1/exports/raceplates?auth=' + jwt">
-      Download Raceplates TSV
+      Download Raceplates CSV
     </v-btn>
     <br />
     <v-btn :href="'https://api.bigbikebash.org.uk/v1/exports/labels?auth=' + jwt">
-      Download Labels TSV
+      Download Labels CSV
     </v-btn>
     <v-btn :href="'https://api.bigbikebash.org.uk/v1/exports/registration?auth=' + jwt">
-      Download Registration TSV
+      Download Registration CSV
+    </v-btn>
+    <v-btn :href="'https://api.bigbikebash.org.uk/v1/exports/emails?auth=' + jwt">
+      Download Emails CSV
     </v-btn>
   </v-container>
 </template>
