@@ -85,7 +85,7 @@ router.get('/emails', asyncWrapper(async (req, res, next) => {
     csv = csv.concat(`${order.email}\n`)
   }
 
-  setupDownload('labels', csv, res)
+  setupDownload('emails', csv, res)
 }))
 
 router.get('/registration', authMiddleware, asyncWrapper(async (req, res, next) => {
