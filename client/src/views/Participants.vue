@@ -31,8 +31,8 @@
     </v-btn>
 
     <v-btn
-      color="success"
       :disabled="!isParticipantsReady"
+      color="success"
       @click="clickFinish"
     >
       Finish

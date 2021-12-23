@@ -69,11 +69,13 @@
           </template>
         </v-checkbox>
 
-        <p class="red--text" v-if="!(acceptTC && privacy)">You must accept all conditions to continue</p>
+        <p
+          v-if="!(acceptTC && privacy)"
+          class="red--text">You must accept all conditions to continue</p>
         <v-btn
+          :disabled="!(acceptTC && privacy)"
           color="primary"
           @click="acceptTerms"
-          :disabled="!(acceptTC && privacy)"
         >
           Accept
           <v-icon

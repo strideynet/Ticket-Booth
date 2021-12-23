@@ -9,9 +9,9 @@
       <v-data-table
         :headers="pricingHeaders"
         :items="quote.purchases"
+        :loading="loading"
         hide-actions
         class="elevation-3"
-        :loading="loading"
       >
         <template
           slot="items"

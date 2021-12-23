@@ -8,13 +8,13 @@
               Big Bike Bash
             </h2>
             <h3 class="display-2">
-              27-30 August 2021
+              26-29 August 2022
             </h3>
             <br>
 
             <div class="text-xs-left">
               <span class="subheading">
-                Big Bike Bash is returning for 2021. We hope you are looking forward to it as much as we are with another year of fun for the whole family.
+                Big Bike Bash is returning for 2022. We hope you are looking forward to it as much as we are with another year of fun for the whole family.
                 <br><br>
                 Should you have any difficulties using the site, please contact admin@bigbikebash.org.uk
               </span>

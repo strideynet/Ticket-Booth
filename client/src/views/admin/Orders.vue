@@ -112,9 +112,9 @@
             Close
           </v-btn>
           <v-btn
+            :loading="modalLoading"
             color="blue darken-1"
             flat
-            :loading="modalLoading"
             @click="saveOrder"
           >
             Save

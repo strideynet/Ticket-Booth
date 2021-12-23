@@ -96,11 +96,11 @@ export default {
       commit('updateParticipant', res.data)
     },
     postParticipant: async ({ commit }, participant) => {
-      const res = await api.post(`/participants`, participant)
+      const res = await api.post('/participants', participant)
       commit('addParticipant', res.data)
     },
     postOrder: async ({ commit }, order) => {
-      const res = await api.post(`/orders`, order)
+      const res = await api.post('/orders', order)
       commit('addOrder', res.data)
 
       return res.data

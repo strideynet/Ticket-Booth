@@ -13,24 +13,24 @@
         <v-form>
           <v-text-field
             v-model="first"
+            :error-messages="$v.first.$invalid ? 'This field is required' : null"
             label="First Name"
             placeholder="Placeholder"
-            :error-messages="$v.first.$invalid ? 'This field is required' : null"
           />
 
           <v-text-field
             v-model="last"
+            :error-messages="$v.last.$invalid ? 'This field is required' : null"
             label="Last Name"
             placeholder="Placeholder"
-            :error-messages="$v.last.$invalid ? 'This field is required' : null"
           />
 
           <v-text-field
             v-model="nick"
+            :error-messages="$v.nick.$invalid ? 'Nicknames must be between 2 and 16 chars' : null"
             label="Raceplate Nickname"
             placeholder="Placeholder"
             counter="16"
-            :error-messages="$v.nick.$invalid ? 'Nicknames must be between 2 and 16 chars' : null"
             hint="This nickname will appear on your number-plate. Keep it family friendly!"
             persistent-hint
           />
@@ -38,8 +38,8 @@
           <v-select
             v-model="gender"
             :items="genderOptions"
-            label="Gender"
             :error-messages="$v.gender.$invalid ? 'Gender is a required field' : null"
+            label="Gender"
           />
 
           <v-menu
@@ -56,10 +56,10 @@
             <v-text-field
               slot="activator"
               v-model="dob"
+              :error-messages="$v.dob.$invalid ? 'DoB is a required field' : null"
               label="Birth date"
               prepend-icon="event"
               readonly
-              :error-messages="$v.dob.$invalid ? 'DoB is a required field' : null"
             />
             <v-date-picker
               ref="picker"
@@ -73,15 +73,15 @@
           <v-checkbox
             v-if="age"
             v-model="bedAndBreakfast"
-            :label="`Bed and Breakfast (+£${bnbPrice}.00)`"
+            :label="`Room in the house (+£${bnbPrice}.00)`"
           />
 
           <v-text-field
             v-if="age >= 18"
             v-model="mobile"
+            :error-messages="$v.mobile.$invalid ? 'Must be a valid phone number' : null"
             label="Mobile Number"
             placeholder=""
-            :error-messages="$v.mobile.$invalid ? 'Must be a valid phone number' : null"
             hint="We will only use this for emergency contact at BBB"
             persistent-hint
           />
@@ -149,7 +149,7 @@ export default {
       return 0
     },
     bnbPrice () {
-      return this.dob && this.age < 18 ? 30 : 50
+      return this.dob && this.age < 18 ? 25 : 50
     }
   },
   watch: {

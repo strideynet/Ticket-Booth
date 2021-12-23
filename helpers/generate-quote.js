@@ -13,19 +13,19 @@ const purchaseTypes = {
   },
   adult: {
     name: 'Adult',
-    price: 115
+    price: 140
   },
   family: {
     name: 'Family',
-    price: 230
+    price: 280
   },
   adultBnbAddon: {
-    name: 'Adult Bed and Breakfast Addon',
+    name: 'Adult House Room',
     price: 50
   },
   childBnbAddon: {
-    name: 'Under 18 Bed and Breakfast Addon',
-    price: 30
+    name: 'Under 18 House Room',
+    price: 25
   }
 }
 

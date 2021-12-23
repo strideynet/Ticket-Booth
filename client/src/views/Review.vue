@@ -26,27 +26,27 @@
                     >
                       <v-text-field
                         v-model="orderInfo.partyName"
+                        :error-messages="$v.orderInfo.partyName.$invalid ? 'This field is required' : null"
                         label="Party Name"
                         placeholder="Your Party Name"
-                        :error-messages="$v.orderInfo.partyName.$invalid ? 'This field is required' : null"
                       />
                       <p class="caption">
                         You will need to quote this when you arrive for registration at the bash! Your surname would work nicely.
                       </p>
                       <v-text-field
                         v-model="orderInfo.email"
+                        :error-messages="$v.orderInfo.email.$invalid ? 'This field is required' : null"
                         label="Email Address"
                         type="email"
                         placeholder="Your Email Address"
-                        :error-messages="$v.orderInfo.email.$invalid ? 'This field is required' : null"
                       />
                       <p class="caption">
                         Please make sure this is right, or we won't be able to email you your ticket details!
                       </p>
                       <v-select
                         v-model="orderInfo.yearsAtTheBash"
-                        label="Previous Years at the Bash"
                         :items="bashYearsDropDown"
+                        label="Previous Years at the Bash"
                       />
                       <p class="caption">
                         This won't affect your order but helps us understand more about who attends.
