@@ -83,7 +83,7 @@ export default {
         return false
       }
 
-      if (!getters.isSalesOpen && state.overrideCode !== 'glugglugglug`') {
+      if (!getters.isSalesOpen && state.overrideCode !== 'ticketsforcheese`') {
         return false
       }
 
