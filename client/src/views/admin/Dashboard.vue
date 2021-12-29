@@ -4,7 +4,9 @@
       Admin Dashboard
     </h1>
     <br>
-    <v-layout row wrap>
+    <v-layout
+      row
+      wrap>
       <v-flex
         xs12
         md4
@@ -63,7 +65,7 @@
     <v-btn :href="'https://api.bigbikebash.org.uk/v1/exports/raceplates?auth=' + jwt">
       Download Raceplates CSV
     </v-btn>
-    <br />
+    <br >
     <v-btn :href="'https://api.bigbikebash.org.uk/v1/exports/labels?auth=' + jwt">
       Download Labels CSV
     </v-btn>

@@ -89,24 +89,24 @@
             <v-spacer />
             <v-btn
               v-if="order.status === 'CONFIRMED'"
-              color="red"
               :loading="statusUpdateLoading"
+              color="red"
               @click="changeStatus('CANCELLED')"
             >
               Mark Cancelled
             </v-btn>
             <v-btn
               v-if="order.status === 'CANCELLED'"
-              color="green"
               :loading="statusUpdateLoading"
+              color="green"
               @click="changeStatus('CONFIRMED')"
             >
               Mark Confirmed
             </v-btn>
             <v-btn
-              color="blue darken-1"
               :disabled="!isDirtied || orderDetailsLoading"
               :loading="orderDetailsLoading"
+              color="blue darken-1"
               @click="patchOrder"
             >
               Save
@@ -260,9 +260,9 @@
             Close
           </v-btn>
           <v-btn
+            :loading="modalLoading"
             color="blue darken-1"
             flat
-            :loading="modalLoading"
             @click="saveParticipant"
           >
             Save

@@ -21,7 +21,7 @@
         >
           <v-flex xs1>
             <v-card class="text-xs-center">
-              <br />
+              <br >
               <v-progress-circular
                 indeterminate
                 color="primary"

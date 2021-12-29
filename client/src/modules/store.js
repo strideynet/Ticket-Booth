@@ -36,12 +36,12 @@ export default {
       }))
     },
     deleteParticipant: (state, participant) => {
-      let index = state.participants.indexOf(participant)
+      const index = state.participants.indexOf(participant)
 
       if (index !== -1) state.participants.splice(index, 1)
     },
     updateParticipant: (state, payload) => {
-      let index = state.participants.indexOf(payload.participant)
+      const index = state.participants.indexOf(payload.participant)
 
       if (index !== -1) {
         state.participants[index][payload.key] = payload.value

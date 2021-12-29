@@ -15,13 +15,28 @@ emails.receipt = function (order) {
   const msg = {
     to: order.email,
     from: 'noreply@bigbikebash.org.uk',
-    templateId: 'd-4f4fb606c72b4f2ba28efe12fae9693e',
+    templateId: 'd-14da0352b3384b40a704b0d1cfa287cf',
     dynamic_template_data: {
       ...order
     }
   }
 
   logger.debug('sending receipt', msg)
+
+  return sgMail.send(msg)
+}
+
+emails.extendedCamping = function (order) {
+  const msg = {
+    to: 'admin@bigbikebash.org.uk',
+    from: 'noreply@bigbikebash.org.uk',
+    templateId: 'd-e7946a7cce09472288db29d7746ea842',
+    dynamic_template_data: {
+      ...order
+    }
+  }
+
+  logger.debug('sending extended camping request', msg)
 
   return sgMail.send(msg)
 }
