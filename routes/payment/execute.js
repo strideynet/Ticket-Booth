@@ -60,7 +60,23 @@ module.exports = async (req, res, next) => {
 
     await transaction.commit()
     res.status(200).json(order)
-    return emails.receipt(order.get({ plain: true }))
+
+    // Complete email async, we dont' want to block the request.
+    emails.receipt(order.get({ plain: true })).catch((e) => {
+      logger.error("failed to send receipt", {
+        err: e,
+        orderId: order.id
+      })
+    })
+
+    if (decoded.extendedCamping) {
+      emails.extendedCamping(order.get({ plain: true })).catch((e) => {
+        logger.error("failed to send extended camping email", {
+          err: e,
+          orderId: order.id
+        })
+      })
+    }
   } catch (e) {
     if (transaction) {
       await transaction.rollback()
