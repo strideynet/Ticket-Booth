@@ -53,10 +53,10 @@
                       </p>
                       <v-checkbox
                         v-model="orderInfo.extendedCamping"
-                        label="I want to camp longer!"
+                        label="I want to camp longer! (£30 p/n)"
                       />
                       <p class="caption">
-                        This year we are offering the ability to camp longer than usual beyond the start and end of the event. If you tick this box, we will get in contact with information regarding pricing etc.
+                        This year we are offering the ability to camp longer than usual beyond the start and end of the event. If you tick this box, we will get in contact to arrange.
                       </p>
                     </v-flex>
                   </v-layout>
