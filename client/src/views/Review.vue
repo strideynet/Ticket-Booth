@@ -51,6 +51,13 @@
                       <p class="caption">
                         This won't affect your order but helps us understand more about who attends.
                       </p>
+                      <v-checkbox
+                        v-model="orderInfo.extendedCamping"
+                        label="I want to camp longer!"
+                      />
+                      <p class="caption">
+                        This year we are offering the ability to camp longer than usual beyond the start and end of the event. If you tick this box, we will get in contact with information regarding pricing etc.
+                      </p>
                     </v-flex>
                   </v-layout>
                 </v-form>
@@ -149,7 +156,8 @@ export default {
       orderInfo: {
         partyName: null,
         email: null,
-        yearsAtTheBash: -1
+        yearsAtTheBash: -1,
+        extendedCamping: false,
       }
     }
   },
