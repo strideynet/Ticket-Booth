@@ -4,7 +4,9 @@
     "database": "MYSQL_DATABASE",
     "user": "MYSQL_USER",
     "pass": "MYSQL_PASS",
-    "port": "MYSQL_PORT"
+    "port": "MYSQL_PORT",
+    "socketPath": "MYSQL_SOCKET_PATH",
+    "instanceConnectionName": "INSTANCE_CONNECTION_NAME"
   },
   "paypal": {
     "secret": "PP_SECRET",

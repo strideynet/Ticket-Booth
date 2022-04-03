@@ -4,7 +4,9 @@
     "database": "bbb-dev",
     "port": 3306,
     "user": null,
-    "pass": null
+    "pass": null,
+    "socketPath": null,
+    "instanceConnectionName": null
   },
   "paypal": {
     "secret": null,
