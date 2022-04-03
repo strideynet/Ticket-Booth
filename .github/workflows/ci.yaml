@@ -25,6 +25,6 @@ jobs:
         push: true
         context: .
         tags: |
-          ghcr.io/strideynet/Ticket-Booth:latest
-          ghcr.io/strideynet/Ticket-Booth:${{ github.sha }}
-          ghcr.io/strideynet/Ticket-Booth:${{ github.ref_name }}
+          ghcr.io/strideynet/ticket-booth:latest
+          ghcr.io/strideynet/ticket-booth:${{ github.sha }}
+          ghcr.io/strideynet/ticket-booth:${{ github.ref_name }}
