@@ -14,7 +14,7 @@
     "fuse.js": "^3.3.0",
     "lodash": "^4.17.15",
     "material-design-icons-iconfont": "^3.0.3",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "paypal-checkout": "^4.0.228",
     "vue": "^2.6.10",
     "vue-fragment": "^1.2.2",
