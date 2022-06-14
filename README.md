@@ -11,7 +11,7 @@ UPDATE participants SET plateNumber = (@x:=@x+1) ORDER BY createdAt ASC;
 
 ### Get participant data
 
-``sql
+```sql
 SELECT 
 	TIMESTAMPDIFF(YEAR, p.dob, '2022-08-26' ) as age,
 	p.gender as gender,
