@@ -26,19 +26,4 @@ emails.receipt = function (order) {
   return sgMail.send(msg)
 }
 
-emails.extendedCamping = function (order) {
-  const msg = {
-    to: 'admin@bigbikebash.org.uk',
-    from: 'noreply@bigbikebash.org.uk',
-    templateId: 'd-e7946a7cce09472288db29d7746ea842',
-    dynamic_template_data: {
-      ...order
-    }
-  }
-
-  logger.debug('sending extended camping request', msg)
-
-  return sgMail.send(msg)
-}
-
 module.exports = emails

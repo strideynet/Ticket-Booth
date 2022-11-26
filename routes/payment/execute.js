@@ -69,14 +69,6 @@ module.exports = async (req, res, next) => {
       })
     })
 
-    if (decoded.extendedCamping) {
-      emails.extendedCamping(order.get({ plain: true })).catch((e) => {
-        logger.error("failed to send extended camping email", {
-          err: e,
-          orderId: order.id
-        })
-      })
-    }
   } catch (e) {
     if (transaction) {
       await transaction.rollback()

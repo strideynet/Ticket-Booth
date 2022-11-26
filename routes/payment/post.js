@@ -36,10 +36,6 @@ module.exports = async (req, res, next) => {
       throw new ValidationError('OrderInfo yearsAtTheBash', '', 'missing')
     }
 
-    if (req.body.orderInfo.extendedCamping === undefined) {
-      throw new ValidationError('OrderInfo extendedCamping', '', 'missing')
-    }
-
     if (!req.body.orderInfo.email) {
       throw new ValidationError('OrderInfo email', '', 'missing')
     }
@@ -80,7 +76,6 @@ module.exports = async (req, res, next) => {
       yearsAtTheBash: req.body.orderInfo.yearsAtTheBash,
       partyName: req.body.orderInfo.partyName,
       paymentId: payment.id,
-      extendedCamping: req.body.orderInfo.extendedCamping
     }
 
     delete paymentJWT.exp

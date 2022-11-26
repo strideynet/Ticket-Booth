@@ -142,9 +142,6 @@ export default {
 
       return 0
     },
-    bnbPrice () {
-      return this.dob && this.age < 18 ? 25 : 50
-    }
   },
   watch: {
     dateSelector (val) {
