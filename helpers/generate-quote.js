@@ -19,14 +19,6 @@ const purchaseTypes = {
     name: 'Family',
     price: 280
   },
-  adultBnbAddon: {
-    name: 'Adult House Room',
-    price: 50
-  },
-  childBnbAddon: {
-    name: 'Under 18 House Room',
-    price: 25
-  }
 }
 
 /**
@@ -95,19 +87,6 @@ async function generateQuote (rawParticipants) {
     ...Object.entries(ticketsSorted).map(([ticketTypeName, tickets]) => ({
       ...purchaseTypes[ticketTypeName], // pull in name/unit price,
       quantity: tickets.length
-    }))
-  ]
-
-  // handle bed and breakfast
-  const participantsForBedandBreakfast = {
-    adult: processedParticipants.filter(p => p.age >= 18 && p.bedAndBreakfast === true).length,
-    child: processedParticipants.filter(p => p.age < 18 && p.bedAndBreakfast === true).length
-  }
-  purchases = [
-    ...purchases,
-    ...Object.entries(participantsForBedandBreakfast).map(([bnbType, quantity]) => ({
-      ...purchaseTypes[bnbType + 'BnbAddon'], // pull in name/price
-      quantity
     }))
   ]
 

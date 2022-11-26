@@ -20,5 +20,4 @@ export const newParticipant = {
   gender: 'male',
   dob: null,
   mobile: null,
-  bedAndBreakfast: false
 }

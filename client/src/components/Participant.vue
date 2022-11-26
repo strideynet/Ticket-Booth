@@ -70,12 +70,6 @@
             />
           </v-menu>
 
-          <v-checkbox
-            v-if="age"
-            v-model="bedAndBreakfast"
-            :label="`Room in the house (+£${bnbPrice}.00)`"
-          />
-
           <v-text-field
             v-if="age >= 18"
             v-model="mobile"
@@ -140,7 +134,7 @@ export default {
     }
   },
   computed: {
-    ...['first', 'last', 'nick', 'mobile', 'dob', 'gender', 'bedAndBreakfast'].reduce((acc, key) => ({ ...acc, [key]: produceComputedProperty(key) }), {}), // maps getter/setters for participant fancily
+    ...['first', 'last', 'nick', 'mobile', 'dob', 'gender'].reduce((acc, key) => ({ ...acc, [key]: produceComputedProperty(key) }), {}), // maps getter/setters for participant fancily
     age () {
       if (this.dob) {
         return moment(this.$store.state.store.settings.bashDate).diff(this.dob, 'years')
@@ -195,9 +189,6 @@ export default {
     gender: {
       required
     },
-    bedAndBreakfast: {
-      required
-    }
   }
 }
 </script>
