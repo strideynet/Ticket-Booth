@@ -13,11 +13,11 @@ const purchaseTypes = {
   },
   adult: {
     name: 'Adult',
-    price: 140
+    price: 160
   },
   family: {
     name: 'Family',
-    price: 280
+    price: 300
   },
 }
 
