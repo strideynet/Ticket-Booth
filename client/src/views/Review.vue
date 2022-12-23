@@ -51,13 +51,6 @@
                       <p class="caption">
                         This won't affect your order but helps us understand more about who attends.
                       </p>
-                      <v-checkbox
-                        v-model="orderInfo.extendedCamping"
-                        label="I want to camp longer! (£30 p/n)"
-                      />
-                      <p class="caption">
-                        This year we are offering the ability to camp longer than usual beyond the start and end of the event. If you tick this box, we will get in contact to arrange.
-                      </p>
                     </v-flex>
                   </v-layout>
                 </v-form>
@@ -81,7 +74,6 @@
                   <td>{{ props.item.nick }}</td>
                   <td>{{ props.item.dob }}</td>
                   <td>{{ age(props.item.dob) }}</td>
-                  <td>{{ props.item.bedAndBreakfast ? 'Yes' : 'No' }}</td>
                 </template>
               </v-data-table>
             </v-card>
@@ -146,10 +138,6 @@ export default {
             text: 'Age At Bash',
             sortable: false
           },
-          {
-            text: 'Bed and Breakfast',
-            sortable: false
-          }
         ]
       },
       bashYearsDropDown,
@@ -157,7 +145,7 @@ export default {
         partyName: null,
         email: null,
         yearsAtTheBash: -1,
-        extendedCamping: false,
+        registrationPlates: [],
       }
     }
   },

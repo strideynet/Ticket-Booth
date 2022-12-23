@@ -53,6 +53,10 @@ module.exports = function (sequelize, DataTypes) {
     note: {
       type: DataTypes.TEXT('medium'),
       allowNull: true
+    },
+    registrationPlates: {
+      type: DataTypes.JSON,
+      allowNull: false
     }
   })
 

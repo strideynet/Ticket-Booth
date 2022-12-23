@@ -46,10 +46,6 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    bedAndBreakfast: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    }
   })
 
   Participant.associate = function (models) {

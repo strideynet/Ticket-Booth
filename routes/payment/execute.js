@@ -43,7 +43,8 @@ module.exports = async (req, res, next) => {
       yearsAtTheBash: decoded.yearsAtTheBash,
       email: decoded.email,
       type: 'PORTAL_PURCHASE',
-      status: 'CONFIRMED'
+      status: 'CONFIRMED',
+      registrationPlates: decoded.registrationPlates
     }
     logger.debug(orderFields, 'creating order')
 
@@ -65,18 +66,10 @@ module.exports = async (req, res, next) => {
     emails.receipt(order.get({ plain: true })).catch((e) => {
       logger.error("failed to send receipt", {
         err: e,
-        orderId: order.id
+        orderId: order.id,
       })
     })
 
-    if (decoded.extendedCamping) {
-      emails.extendedCamping(order.get({ plain: true })).catch((e) => {
-        logger.error("failed to send extended camping email", {
-          err: e,
-          orderId: order.id
-        })
-      })
-    }
   } catch (e) {
     if (transaction) {
       await transaction.rollback()

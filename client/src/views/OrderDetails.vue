@@ -87,9 +87,6 @@
               <td>
                 {{ props.item.gender }}
               </td>
-              <td>
-                {{ props.item.bedAndBreakfast ? 'Yes' : 'No' }}
-              </td>
             </template>
           </v-data-table>
         </v-card>
@@ -153,10 +150,6 @@ export default {
           value: 'gender',
           sortable: false
         },
-        {
-          text: 'Bed and Breakfast',
-          sortable: false
-        }
       ]
     }
   },

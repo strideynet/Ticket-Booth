@@ -183,7 +183,8 @@ export default {
         value: 0,
         email: 'john@thesmiths.com',
         yearsAtTheBash: -1,
-        note: ''
+        note: '',
+        registrationPlates: [],
       },
       pagination: {
         rowsPerPage: 20
