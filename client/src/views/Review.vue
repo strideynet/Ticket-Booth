@@ -145,6 +145,7 @@ export default {
         partyName: null,
         email: null,
         yearsAtTheBash: -1,
+        registrationPlates: [],
       }
     }
   },

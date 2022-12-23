@@ -75,6 +75,7 @@ module.exports = async (req, res, next) => {
       email: req.body.orderInfo.email,
       yearsAtTheBash: req.body.orderInfo.yearsAtTheBash,
       partyName: req.body.orderInfo.partyName,
+      registrationPlates: req.body.orderInfo.registrationPlates,
       paymentId: payment.id,
     }
 
