@@ -59,6 +59,20 @@
           </v-flex>
           <v-flex xs12>
             <v-card>
+              <v-card-title><h4>Optional Extras!</h4></v-card-title>
+              <v-divider />
+              <v-card-text>
+                This year booking B&B accomodation and additional camping will
+                be direct with UKYouth and Avon Tyrell (the fantastic folks
+                who host us)!
+
+                Links to book this will be emailed out in coming weeks for those
+                who are interested.
+              </v-card-text>
+            </v-card>
+          </v-flex>
+          <v-flex xs12>
+            <v-card>
               <v-card-title><h4>Participants</h4></v-card-title>
               <v-divider />
               <v-data-table
