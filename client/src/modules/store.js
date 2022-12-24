@@ -10,6 +10,13 @@ const isParticipantsReady = (state) => {
   return false
 }
 
+// Yeah these are hardcoded in the source. If you decide to read the source and
+// abuse this to purchase tickets when we are already sold out without our
+// prior instruction, we'll just refund your tickets and bar you permenantly
+// from the bash :')
+const MASTER_OVERRIDE = "nicknicknick"
+const SALES_DATE_OVERRIDE = "ticketsforcheese"
+
 export default {
   name: 'store',
   namespaced: true,
@@ -79,15 +86,19 @@ export default {
       return state.settings.maxParticipants > state.settings.currentParticipants
     },
     isPurchaseAllowed: (state, getters) => {
+      if (state.overrideCode === MASTER_OVERRIDE) {
+        return true
+      }
+
       if (!getters.isTicketsLeft) {
         return false
       }
 
-      if (!getters.isSalesOpen && state.overrideCode !== 'ticketsforcheese') {
-        return false
+      if (state.overrideCode === SALES_DATE_OVERRIDE) {
+        return true
       }
 
-      return true
+      return getters.isSalesOpen
     }
   }
 }
