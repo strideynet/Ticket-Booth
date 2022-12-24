@@ -62,7 +62,7 @@
               <v-card-title><h4>Optional Extras!</h4></v-card-title>
               <v-divider />
               <v-card-text>
-                This year booking B&B accomodation and additional camping will
+                This year, booking B&B accomodation and additional camping will
                 be direct with UKYouth and Avon Tyrell (the fantastic folks
                 who host us)!
 
