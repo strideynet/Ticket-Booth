@@ -57,7 +57,15 @@ module.exports = function (sequelize, DataTypes) {
     registrationPlates: {
       type: DataTypes.JSON,
       allowNull: false
-    }
+    },
+    paypalTransactionId: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    shippingAddress: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
   })
 
   Order.associate = function (models) {

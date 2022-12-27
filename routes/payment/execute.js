@@ -18,8 +18,19 @@ function executeOrder (id, payerId) {
   })
 }
 
+function convertShippingAddress(raw) {
+  let builtString = ""
+  const fields = ["recipient_name", "line1", "line2", "city", "postal_code", "country_code"]
+  for (let field of fields) {
+    if (raw[field]) {
+      builtString += (raw[field] + "\n")
+    }
+  }
+  return builtString
+}
+
 module.exports = async (req, res, next) => {
-  let transaction = null
+  let dbTx = null
   try {
     if (!req.body.paymentJWT) {
       throw new ValidationError('JWT field', '', 'missing')
@@ -34,7 +45,7 @@ module.exports = async (req, res, next) => {
       throw new ValidationError('Payer ID', '', 'missing')
     }
 
-    transaction = await db.transaction()
+    dbTx = await db.transaction()
 
     const orderFields = {
       paypalPayment: decoded.paymentId,
@@ -48,7 +59,7 @@ module.exports = async (req, res, next) => {
     }
     logger.debug(orderFields, 'creating order')
 
-    const order = await db.models.order.create(orderFields, { transaction })
+    const order = await db.models.order.create(orderFields, { transaction: dbTx })
 
     const toCreate = decoded.participants.map(participant => ({
       ...participant,
@@ -56,10 +67,19 @@ module.exports = async (req, res, next) => {
     }))
     logger.debug(toCreate, 'creating participants')
 
-    await db.models.participant.bulkCreate(toCreate, { transaction })
-    await executeOrder(decoded.paymentId, req.body.payerId)
+    await db.models.participant.bulkCreate(toCreate, { transaction: dbTx })
 
-    await transaction.commit()
+    const executedOrder = await executeOrder(decoded.paymentId, req.body.payerId)
+    const paypalTx = executedOrder.transactions[0]
+    const paypalTransactionId = paypalTx.related_resources[0].sale.id
+    const shippingAddress = convertShippingAddress(paypalTx.item_list.shipping_address)
+    
+    await order.update({
+      paypalTransactionId,
+      shippingAddress
+    }, { transaction: dbTx })
+
+    await dbTx.commit()
     res.status(200).json(order)
 
     // Complete email async, we dont' want to block the request.
@@ -71,8 +91,8 @@ module.exports = async (req, res, next) => {
     })
 
   } catch (e) {
-    if (transaction) {
-      await transaction.rollback()
+    if (dbTx) {
+      await dbTx.rollback()
     }
 
     next(e)
