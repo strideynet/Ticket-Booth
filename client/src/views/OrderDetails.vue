@@ -39,7 +39,10 @@
               <p><strong>Ticket Number:</strong> {{ details.id }}</p>
             </v-list-tile>
             <v-list-tile>
-              <p><strong>Paypal ID:</strong> {{ details.paypalPayment }}</p>
+              <p><strong>Paypal Transaction:</strong> {{ details.paypalTransactionId }}</p>
+            </v-list-tile>
+            <v-list-tile>
+              <p><strong>Shipping Address:</strong> {{ details.shippingAddress }}</p>
             </v-list-tile>
             <v-list-tile>
               <p><strong>Ticket Value:</strong> £{{ details.value }}</p>

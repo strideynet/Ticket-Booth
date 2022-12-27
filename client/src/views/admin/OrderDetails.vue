@@ -39,6 +39,13 @@
 
               <v-flex md12>
                 <v-textarea
+                  v-model="modifiedOrder.shippingAddress"
+                  label="Shipping Address"
+                />
+              </v-flex>
+
+              <v-flex md12>
+                <v-textarea
                   v-model="modifiedOrder.note"
                   label="Order Note"
                 />
@@ -54,8 +61,8 @@
 
               <v-flex md12>
                 <v-text-field
-                  v-model="modifiedOrder.paypalPayment"
-                  label="Paypal ID"
+                  v-model="modifiedOrder.paypalTransactionId"
+                  label="Paypal Transaction"
                   disabled
                 />
               </v-flex>
