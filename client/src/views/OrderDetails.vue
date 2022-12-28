@@ -39,7 +39,8 @@
               <p><strong>Ticket Number:</strong> {{ details.id }}</p>
             </v-list-tile>
             <v-list-tile>
-              <p><strong>Shipping Address:</strong><br/><pre>{{ details.shippingAddress }}</pre></p>
+              <p><strong>Shipping Address:</strong></p>
+              <div class="text-pre-wrap" v-text="details.shippingAddress" />
             </v-list-tile>
             <v-list-tile>
               <p><strong>Ticket Value:</strong> £{{ details.value }}</p>
