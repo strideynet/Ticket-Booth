@@ -84,7 +84,7 @@ module.exports = async (req, res, next) => {
     logger.info({
       paypalOrder: executedOrder,
       order: order,
-    }, "Order processed")
+    }, "order processed")
 
     try {
       await emails.receipt(order.get({ plain: true }))
