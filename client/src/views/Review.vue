@@ -59,15 +59,31 @@
           </v-flex>
           <v-flex xs12>
             <v-card>
+              <v-card-title><h4>Your Address</h4></v-card-title>
+              <v-divider />
+              <v-card-text>
+                To improve event security going forward and to help with
+                speeding up the registration process once you get to the site,
+                this year we will be sending out tickets in the post!
+                <br/><br/>
+                <strong>
+                  Please ensure you provide a valid shipping address when
+                  checking out in PayPal!
+                </strong>
+                <br/><br/>
+                A few weeks before we ship tickets, we'll be reaching out to
+                ensure that your address is correct! So don't worry if you
+                move between now and then.
+              </v-card-text>
+            </v-card>
+          </v-flex>
+          <v-flex xs12>
+            <v-card>
               <v-card-title><h4>Extra Camping and B&B</h4></v-card-title>
               <v-divider />
               <v-card-text>
-                This year, booking B&B accomodation and additional camping will
-                be direct with UKYouth and Avon Tyrell (those fab folks
-                who host us)!
-                <br/><br/>
                 <strong>
-                  Links to book this will be emailed out in coming weeks.
+                  Links to book additional nights camping or a room in the house will be emailed out in coming weeks.
                 </strong>
               </v-card-text>
             </v-card>
