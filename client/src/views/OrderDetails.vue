@@ -49,7 +49,7 @@
             </v-list-tile>
           </v-list>
           <v-divider/>
-          <v-card-title><h5>Address</h5></v-card-title>
+          <v-card-title><h4>Shipping Address</h4></v-card-title>
           <v-card-text style="white-space: pre-line" v-text="details.shippingAddress" />
         </v-card>
       </v-flex>
