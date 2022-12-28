@@ -90,10 +90,10 @@ module.exports = async (req, res, next) => {
       await emails.receipt(order.get({ plain: true }))
       logger.info("sent receipt email succesfully")
     } catch(err) {
-      logger.error("failed to send receipt", {
-        err: e,
+      logger.error({
+        err,
         orderId: order.id,
-      })
+      }, "failed to send receipt")
     }
 
     res.status(200).json(order)
