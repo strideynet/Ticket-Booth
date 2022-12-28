@@ -3,7 +3,7 @@ const crypto = require('crypto')
 module.exports = function (sequelize, DataTypes) {
   const Participant = sequelize.define('participant', {
     id: {
-      defaultValue: () => crypto.randomBytes(16).toString('hex'),
+      defaultValue: () => "P-" + crypto.randomBytes(8).toString('hex'),
       primaryKey: true,
       type: DataTypes.STRING
     },

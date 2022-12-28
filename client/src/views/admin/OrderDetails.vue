@@ -54,7 +54,7 @@
               <v-flex md12>
                 <v-text-field
                   v-model="modifiedOrder.id"
-                  label="Ticket Number"
+                  label="Order ID"
                   disabled
                 />
               </v-flex>

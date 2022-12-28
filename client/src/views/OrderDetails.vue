@@ -36,7 +36,7 @@
               <p><strong>Email:</strong> {{ details.email }}</p>
             </v-list-tile>
             <v-list-tile>
-              <p><strong>Ticket Number:</strong> {{ details.id }}</p>
+              <p><strong>Order ID:</strong> {{ details.id }}</p>
             </v-list-tile>
             <v-list-tile>
               <p><strong>Ticket Value:</strong> £{{ details.value }}</p>

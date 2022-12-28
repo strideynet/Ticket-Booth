@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
-      defaultValue: () => crypto.randomBytes(16).toString('hex')
+      defaultValue: () => "O-" + crypto.randomBytes(8).toString('hex')
     },
     value: {
       type: DataTypes.DECIMAL(8, 2), // 999999.99 Max value should be enough
