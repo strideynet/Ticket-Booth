@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '../store'
 
 let api = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? 'https://api.bbb.noahstride.co.uk/v1' : 'http://localhost:8081/v1'
+  baseURL: process.env.NODE_ENV === 'production' ? 'https://api.bigbikebash.org.uk/v1' : 'http://localhost:8081/v1'
 })
 
 api.interceptors.request.use((config) => {
