@@ -48,7 +48,6 @@ module.exports = async (req, res, next) => {
     dbTx = await db.transaction()
 
     const orderFields = {
-      paypalPayment: decoded.paymentId,
       value: decoded.totalPrice,
       partyName: decoded.partyName,
       yearsAtTheBash: decoded.yearsAtTheBash,
