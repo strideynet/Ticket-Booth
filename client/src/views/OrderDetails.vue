@@ -39,10 +39,6 @@
               <p><strong>Ticket Number:</strong> {{ details.id }}</p>
             </v-list-tile>
             <v-list-tile>
-              <p><strong>Shipping Address:</strong></p>
-              <div class="text-pre-wrap" v-text="details.shippingAddress" />
-            </v-list-tile>
-            <v-list-tile>
               <p><strong>Ticket Value:</strong> £{{ details.value }}</p>
             </v-list-tile>
             <v-list-tile>
@@ -52,6 +48,9 @@
               <p><strong>Order Date&Time:</strong> {{ details.createdAt | dateTime }}</p>
             </v-list-tile>
           </v-list>
+          <v-divider/>
+          <v-card-title><h5>Address</h5></v-card-title>
+          <v-card-text style="white-space: pre-line" v-text="details.shippingAddress" />
         </v-card>
       </v-flex>
       <v-flex
