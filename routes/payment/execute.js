@@ -80,16 +80,23 @@ module.exports = async (req, res, next) => {
     }, { transaction: dbTx })
 
     await dbTx.commit()
-    res.status(200).json(order)
 
-    // Complete email async, we dont' want to block the request.
-    emails.receipt(order.get({ plain: true })).catch((e) => {
+    logger.info({
+      paypalOrder: executedOrder,
+      order: order,
+    }, "Order processed")
+
+    try {
+      await emails.receipt(order.get({ plain: true }))
+      logger.info("sent receipt email succesfully")
+    } catch(err) {
       logger.error("failed to send receipt", {
         err: e,
         orderId: order.id,
       })
-    })
+    }
 
+    res.status(200).json(order)
   } catch (e) {
     if (dbTx) {
       await dbTx.rollback()
