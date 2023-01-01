@@ -17,7 +17,7 @@ const purchaseTypes = {
   },
   family: {
     name: 'Family',
-    price: 300
+    price: 320
   },
 }
 
