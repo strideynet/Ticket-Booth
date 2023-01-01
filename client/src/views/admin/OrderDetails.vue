@@ -69,7 +69,7 @@
 
               <v-flex md12>
                 <v-text-field
-                  v-model="modifiedOrder.registrationPlates"
+                  :value="registrationPlates"
                   label="Vehicle registrations"
                   disabled
                 />
@@ -358,6 +358,19 @@ export default {
     },
     isDirtied () {
       return !_.isEqual(this.modifiedOrder, this.order)
+    },
+    registrationPlates () {
+      const plates = this.order.registrationPlates
+
+      if (!plates) {
+        return "none registered"
+      }
+
+      if (!plates.length) {
+        return "none registered"
+      }
+
+      return this.order.registrationPlates.join(' ')
     }
   },
   watch: {
