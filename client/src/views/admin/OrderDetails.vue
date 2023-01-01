@@ -69,7 +69,7 @@
 
               <v-flex md12>
                 <v-text-field
-                  v-value="modifiedOrder.registrationPlates"
+                  v-model="modifiedOrder.registrationPlates"
                   label="Vehicle registrations"
                   disabled
                 />
