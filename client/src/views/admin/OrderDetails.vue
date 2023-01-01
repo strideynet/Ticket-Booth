@@ -363,14 +363,10 @@ export default {
       const plates = this.modifiedOrder.registrationPlates
 
       if (!plates) {
-        console.log("no plates")
-        console.log(this.modifiedOrder)
         return "none registered"
       }
 
       if (!plates.length) {
-        console.log("no plates length")
-        console.log(this.modifiedOrder)
         return "none registered"
       }
 
