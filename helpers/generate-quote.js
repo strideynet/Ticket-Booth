@@ -40,7 +40,7 @@ async function generateQuote (rawParticipants) {
   const participantsSorted = {
     u5: processedParticipants.filter(p => p.age < 5),
     u16: processedParticipants.filter(p => p.age < 16 && p.age >= 5),
-    adult: processedParticipants.filter(p => p.age >= 18)
+    adult: processedParticipants.filter(p => p.age >= 16)
   }
 
   const ticketsSorted = {
