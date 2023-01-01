@@ -51,6 +51,17 @@
                       <p class="caption">
                         This won't affect your order but helps us understand more about who attends.
                       </p>
+                      <v-text-field
+                        v-model="orderInfo.regPlateOne"
+                        label="Vehicle Registration"
+                      />
+                      <v-text-field
+                        v-model="orderInfo.regPlateTwo"
+                        label="Second Vehicle Registration"
+                      />
+                      <p class="caption">
+                        You can provide the registration plate number of up to two vehicles you wish to bring to the bash!
+                      </p>
                     </v-flex>
                   </v-layout>
                 </v-form>
@@ -176,7 +187,8 @@ export default {
         partyName: null,
         email: null,
         yearsAtTheBash: -1,
-        registrationPlates: [],
+        regPlateOne: '',
+        regPlateTwo: '',
       }
     }
   },

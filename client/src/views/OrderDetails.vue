@@ -47,6 +47,9 @@
             <v-list-tile>
               <p><strong>Order Date&Time:</strong> {{ details.createdAt | dateTime }}</p>
             </v-list-tile>
+            <v-list-tile>
+              <p><strong>Vehicle Registrations:</strong> {{ details.registrationPlates | joinPlates }}</p>
+            </v-list-tile>
           </v-list>
           <v-divider/>
           <v-card-title><h4>Shipping Address</h4></v-card-title>
@@ -111,6 +114,18 @@ export default {
       let date = new Moment(value)
 
       return date.format('DD/MM/YYYY HH:mm:ss')
+    },
+    joinPlates(value) {
+      const noneRegistered = "none registered"
+      if (!value) {
+        return noneRegistered
+      }
+
+      if (!value.length) {
+        return noneRegistered
+      }
+
+      return value.join(' ')
     }
   },
   data () {

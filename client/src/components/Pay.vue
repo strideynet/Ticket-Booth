@@ -50,9 +50,19 @@ export default {
       },
 
       payment: () => {
+        const registrationPlates = []
+        if (this.orderInfo.regPlateOne) {
+          registrationPlates.push(this.orderInfo.regPlateOne)
+        }
+        if (this.orderInfo.regPlateTwo) {
+          registrationPlates.push(this.orderInfo.regPlateTwo)
+        }
         return api.post('/payment', {
           quoteJWT: this.jwt,
-          orderInfo: this.orderInfo
+          orderInfo: {
+            ...this.orderInfo,
+            registrationPlates
+          }
         }).then((res) => {
           this.paymentJWT = res.data.jwt
           return res.data.paymentId
