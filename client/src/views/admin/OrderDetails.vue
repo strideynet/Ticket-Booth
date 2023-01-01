@@ -360,7 +360,7 @@ export default {
       return !_.isEqual(this.modifiedOrder, this.order)
     },
     registrationPlates () {
-      const plates = this.order.registrationPlates
+      const plates = this.modifiedOrder.registrationPlates
 
       if (!plates) {
         return "none registered"
@@ -370,7 +370,7 @@ export default {
         return "none registered"
       }
 
-      return this.order.registrationPlates.join(' ')
+      return this.modifiedOrder.registrationPlates.join(' ')
     }
   },
   watch: {
