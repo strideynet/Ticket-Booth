@@ -35,7 +35,7 @@
               You cannot pay until you have completed the order details.
             </strong>
             <strong
-              v-else-if=""
+              v-else-if="missingAdult"
               class="red--text"
             >
               Tickets for Under 18s cannot be purchased without an accompanying adult.
