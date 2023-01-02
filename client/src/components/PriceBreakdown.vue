@@ -56,6 +56,7 @@
 import { mapState } from 'vuex'
 import api from '@/helpers/api'
 import Pay from '@/components/Pay.vue'
+import moment from 'moment'
 
 export default {
   name: 'PriceBreakdown',
