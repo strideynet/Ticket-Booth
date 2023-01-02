@@ -27,17 +27,24 @@
             <br>
             <h2>Total Cost: £{{ quote.totalPrice }}.00</h2>
             <br>
-            <pay
-              v-if="validated && quoteJWT"
-              :jwt="quoteJWT"
-              :order-info="orderInfo"
-            />
+
             <strong
-              v-else
+              v-if="!validated || !quoteJWT"
               class="red--text"
             >
               You cannot pay until you have completed the order details.
             </strong>
+            <strong
+              v-else-if=""
+              class="red--text"
+            >
+              Tickets for Under 18s cannot be purchased without an accompanying adult.
+            </strong>
+            <pay
+              v-else
+              :jwt="quoteJWT"
+              :order-info="orderInfo"
+            />
           </td>
         </template>
       </v-data-table>
@@ -89,7 +96,21 @@ export default {
     }
   },
   computed: {
-    ...mapState('store', ['participants'])
+    ...mapState('store', ['participants']),
+    missingAdult() {
+      let adult = false
+      let child = false
+      for (const p of this.participants) {
+        const age = moment(this.$store.state.store.settings.bashDate).diff(p.dob, 'years')
+        if (age < 18) {
+          child = true
+        } else {
+          adult = true
+        }
+      }
+
+      return child && !adult
+    }
   },
   created () {
     this.$watch('participants', function (newVal, oldVal) {
